@@ -8,8 +8,8 @@ function showcaseidx_create_menu_page() {
 }
 
 function register_mysettings() {  
-    register_setting( 'showcase-settings-group', 'api_key' );
-    register_setting( 'showcase-settings-group', 'website_id' );
+    register_setting( 'showcase-settings-group', 'showcaseidx_api_key' );
+    register_setting( 'showcase-settings-group', 'showcaseidx_region' );
 }
 
 function display_showcase_settings() {
@@ -22,9 +22,19 @@ function display_showcase_settings() {
 
     <table class="form-table">
         <tr valign="top">
-        <th scope="row">API Key</th>
-        <td><input type="text" name="api_key" value="<?php echo get_option('api_key'); ?>" /></td>
-        </tr>        
+            <th scope="row">API Key</th>
+            <td><input type="text" name="showcaseidx_api_key" value="<?php echo get_option('showcaseidx_api_key'); ?>" /></td>
+        </tr>
+        <tr valign="top">
+            <th scope="row">Region</th>
+            <td>
+                <select name="showcaseidx_region">
+                    <option value=""></option>
+                    <option value="1_2">GAMLS/FMLS</option>
+                    <option value="74">Miami</option>
+                </select>
+            </td>
+        </tr>
     </table>
     <?php submit_button(); ?>
 </form>

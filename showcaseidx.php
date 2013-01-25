@@ -4,7 +4,7 @@ Plugin Name: Showcase IDX
 Plugin URI: http://showcaseidx.com/
 Description: Interactive, map-centric real-estate property search.
 Author: Kanwei Li
-Version: 1.0
+Version: 1.1
 Author URI: http://showcaseidx.com/
 */
 
@@ -27,12 +27,10 @@ Author URI: http://showcaseidx.com/
 global $wp_version;
 
 require_once(ABSPATH . "wp-admin/includes/plugin.php");
-
 add_action( 'plugins_loaded', 'showcase_plugin_setup' );
 
 function showcase_plugin_setup() {
     add_option("showcaseidx_api_key", "");
-    add_option("showcaseidx_website_id", "");
     add_shortcode("showcaseidx", "showcase_shortcode");
 
     require_once("idx_options.php");
@@ -40,24 +38,20 @@ function showcase_plugin_setup() {
 
 function showcase_shortcode() {
     $host = "idx.showcaseidx.com";
+    $api_key = get_option("showcaseidx_api_key", "");
+    $data_prefix = get_option("showcaseidx_region", "");
     return <<<EOT
         <link href="http://$host/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
         <link href='http://fonts.googleapis.com/css?family=Pontano+Sans&subset=latin' rel='stylesheet' type='text/css'>
         <link href='http://fonts.googleapis.com/css?family=Bitter:400,700&subset=latin' rel='stylesheet' type='text/css'>
         <link href='http://fonts.googleapis.com/css?family=Francois+One&subset=latin' rel='stylesheet' type='text/css'>
-        <script type="text/javascript">var SHOWCASE_CONF = { WEBSITE_ROOT: "http://$host" };</script>
-        <script src="http://$host/js/mydx2.js"></script>
-        <script type="text/javascript" src="http://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-50a2dde218aceee1"></script>
-        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfITsP9KWNM61m1eT_8rsov2QoK932LCY&sensor=false">
-        </script>
+        <script type="text/javascript">var SHOWCASE_CONF = { WEBSITE_ID: $api_key, WEBSITE_ROOT: "http://$host", DATA_PREFIX: "$data_prefix" };</script>
 
-        <div id="mydx-container">
-            <div id="topbar"></div>
-            <div id="main-region"></div>
-
-            <footer>
-                <p><a target=_blank href="http://showcaseidx.com"><img src="http://$host/images/poweredshowcase.png" /></a></p>
-            </footer>
+        <div id="mydx-container" ng-controller="AppController" ng-app="mydx2">
+            <div ng-include="'http://$host/templates/layout.html'"></div>
+            <script src="http://$host/js/mydx2.js"></script>
+            <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfITsP9KWNM61m1eT_8rsov2QoK932LCY&sensor=false"></script>
+            <script type="text/javascript" src="http://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-50a2dde218aceee1"></script>
         </div>
 EOT;
 }
