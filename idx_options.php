@@ -12,6 +12,12 @@ function register_mysettings() {
     register_setting( 'showcase-settings-group', 'showcaseidx_region' );
 }
 
+function matches($x) {
+    if ($x == get_option('showcaseidx_region')) {
+        echo " selected ";
+    }
+}
+
 function display_showcase_settings() {
 ?>
 <div class="wrap">
@@ -30,8 +36,8 @@ function display_showcase_settings() {
             <td>
                 <select name="showcaseidx_region">
                     <option value=""></option>
-                    <option value="1_2">GAMLS/FMLS</option>
-                    <option value="74">Miami</option>
+                    <option <?php matches("1_2"); ?> value="1_2">GAMLS/FMLS</option>
+                    <option <?php matches("74"); ?> value="74">Miami</option>
                 </select>
             </td>
         </tr>

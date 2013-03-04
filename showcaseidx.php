@@ -4,7 +4,7 @@ Plugin Name: Showcase IDX
 Plugin URI: http://showcaseidx.com/
 Description: Interactive, map-centric real-estate property search.
 Author: Kanwei Li
-Version: 1.1
+Version: 1.2
 Author URI: http://showcaseidx.com/
 */
 
@@ -38,6 +38,7 @@ function showcase_plugin_setup() {
 
 function showcase_shortcode() {
     $host = "idx.showcaseidx.com";
+    $host = "localhost:9393";
     $api_key = get_option("showcaseidx_api_key", "");
     $data_prefix = get_option("showcaseidx_region", "");
     return <<<EOT
@@ -45,7 +46,7 @@ function showcase_shortcode() {
         <link href='http://fonts.googleapis.com/css?family=Pontano+Sans&subset=latin' rel='stylesheet' type='text/css'>
         <link href='http://fonts.googleapis.com/css?family=Bitter:400,700&subset=latin' rel='stylesheet' type='text/css'>
         <link href='http://fonts.googleapis.com/css?family=Francois+One&subset=latin' rel='stylesheet' type='text/css'>
-        <script type="text/javascript">var SHOWCASE_CONF = { WEBSITE_ID: $api_key, WEBSITE_ROOT: "http://$host", DATA_PREFIX: "$data_prefix" };</script>
+        <script type="text/javascript">var SHOWCASE_CONF = { WEBSITE_ID: "$api_key", WEBSITE_ROOT: "http://$host", DATA_PREFIX: "$data_prefix" };</script>
 
         <div id="mydx-container" ng-controller="AppController" ng-app="mydx2">
             <div ng-include="'http://$host/templates/layout.html'"></div>
