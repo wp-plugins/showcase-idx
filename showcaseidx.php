@@ -38,7 +38,6 @@ function showcase_plugin_setup() {
 
 function showcase_shortcode() {
     $host = "idx.showcaseidx.com";
-    $host = "localhost:9393";
     $api_key = get_option("showcaseidx_api_key", "");
     $data_prefix = get_option("showcaseidx_region", "");
     return <<<EOT
