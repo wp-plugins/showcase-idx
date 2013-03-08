@@ -38,6 +38,7 @@ function display_showcase_settings() {
                     <option value=""></option>
                     <option <?php matches("1_2"); ?> value="1_2">GAMLS/FMLS</option>
                     <option <?php matches("74"); ?> value="74">Miami</option>
+                    <option <?php matches("100_101"); ?> value="100_101">New Jersey</option>
                 </select>
             </td>
         </tr>
