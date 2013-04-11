@@ -51,6 +51,7 @@ function showcaseidx_option($value, $label, $selected) {
 function display_showcase_settings() {
     $debug = isset($_GET['showcaseidx_debug']);
     $adminPanelUrl = home_url() . '/' . showcaseidx_get_prefix() . '/#admin';
+    $propertySearchBaseUrl = home_url() . '/' . showcaseidx_get_prefix();
 
 ?>
 <div class="wrap">
@@ -59,6 +60,7 @@ function display_showcase_settings() {
 <form method="post" action="options.php">
     <?php settings_fields( 'showcase-settings-group' ); ?>
 
+    <h2>Options</h2>
     <table class="form-table">
 <?php if ($debug): ?>
         <tr valign="top">
@@ -89,11 +91,40 @@ function display_showcase_settings() {
             </td>
         </tr>
 -->
+    </table>
+
+    <h2>Basic Usage</h2>
+    <table>
         <tr valign="top">
-            <th scope="row">Edit Showcase IDX Account Setup</th>
-            <td>
-            Many additional options for managing the look &amp; feel of your Showcase IDX Plugin can be done from the <a href="<?php echo $adminPanelUrl; ?>" target="showcaseAdmin">Showcase IDX Admin Panel</a>.
-            </td>
+            <td scope="row">IDX Admin &amp; CRM</td>
+            <td><a href="<?php echo $adminPanelUrl; ?>" target="showcaseAdmin">Showcase IDX Admin Panel</a></td>
+        </tr>
+        <tr valign="top">
+            <td scope="row">Property Search Base URL</td>
+            <td><a href="<?php echo $propertySearchBaseUrl; ?>" target="demo">Basic Search</a></td>
+        </tr>
+        <tr valign="top">
+            <th align="left" colspan="2" scope="row">Short Codes</th>
+        </tr>
+        <tr valign="top">
+            <td scope="row">Full Search Widget</td>
+            <td>[showcaseidx]</td>
+        </tr>
+        <tr valign="top">
+            <td scope="row">Sidebar / 230 pixels wide</td>
+            <td>[showcaseidx_widget_230]</td>
+        </tr>
+        <tr valign="top">
+            <td scope="row">Blog Post Widget / 465 pixels wide</td>
+            <td>[showcaseidx_widget_465]</td>
+        </tr>
+        <tr valign="top">
+            <td scope="row">Header / 700 pixels wide</td>
+            <td>[showcaseidx_widget_700]</td>
+        </tr>
+        <tr valign="top">
+            <td scope="row">Header / 930 pixels wide</td>
+            <td>[showcaseidx_widget_930]</td>
         </tr>
     </table>
     <?php submit_button(); ?>
