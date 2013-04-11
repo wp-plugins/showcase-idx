@@ -4,6 +4,9 @@
 define('SHOWCASEIDX_QUERY_VAR_SEARCH',              'ShowcaseIDX');
 define('SHOWCASEIDX_SEARCH_DEFAULT_URL_NAMESPACE',  'properties' );
 
+define('SHOWCASEIDX_QUERY_VAR_SEO_TITLE',           'ShowcaseSeoTitle');
+define('SHOWCASEIDX_QUERY_VAR_SEO_KEYWORDS',        'ShowcaseSeoKeywords');
+define('SHOWCASEIDX_QUERY_VAR_SEO_DESCRIPTION',     'ShowcaseSeoDescription');
 define('SHOWCASEIDX_QUERY_VAR_COMMUNITY',           'CommunityId');
 define('SHOWCASEIDX_QUERY_VAR_LISTINGS',            'Listings'   );
 define('SHOWCASEIDX_QUERY_VAR_LISTING',             'ListingId'  );
@@ -11,11 +14,11 @@ define('SHOWCASEIDX_QUERY_VAR_LISTING',             'ListingId'  );
 // Plugin Bootstrap / hook installation
 function showcaseidx_plugin_setup() {
     // defaults for our options
-    add_option('showcaseidx_api_host',      '');
-    add_option('showcaseidx_api_key',       '');
-    add_option('showcaseidx_template',      '');
-    add_option('showcaseidx_cache_version', date('r'));
-    add_option('showcaseidx_url_namespace', SHOWCASEIDX_SEARCH_DEFAULT_URL_NAMESPACE);
+    add_option('showcaseidx_api_host',                  '');
+    add_option('showcaseidx_api_key',                   '');
+    add_option('showcaseidx_template',                  '');
+    add_option('showcaseidx_cache_version',             date('r'));
+    add_option('showcaseidx_url_namespace',             SHOWCASEIDX_SEARCH_DEFAULT_URL_NAMESPACE);
 
     // enable widgets to run short codes
 	add_filter('widget_text', 'do_shortcode', 11);

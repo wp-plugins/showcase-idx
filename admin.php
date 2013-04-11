@@ -31,9 +31,14 @@ function showcaseidx_sanitize_url_namespace($input)
 
 function showcaseidx_once_per_admin_save_hack_via_sanitizer($input)
 {
+    showcaseidx_refresh_setup_expensive();
+    return $input;
+}
+
+function showcaseidx_refresh_setup_expensive()
+{
     showcaseidx_install_rewrite_rules();
     showcaseidx_bust_cache();
-    return $input;
 }
 
 function showcaseidx_option($value, $label, $selected) {

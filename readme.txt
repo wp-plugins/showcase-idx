@@ -2,8 +2,8 @@
 Contributors: kanwei@gmail.com
 Tags: real estate, idx
 Requires at least: 3.0
-Tested up to: 3.5
-Stable tag: 1.3
+Tested up to: 3.5.1
+Stable tag: 1.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -35,6 +35,9 @@ You will need to be a member of an MLS board that provides IDX data, and have ac
 Please visit [showcaseidx.com](http://showcaseidx.com) for information.
 
 == Changelog ==
+
+= 1.3.1 =
+* Add SEO: title, description, and keywords for search page, listing index & detail pages.
 
 = 1.3 =
 * Add a bunch of widgets.

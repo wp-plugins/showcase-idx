@@ -13,7 +13,7 @@ function showcaseidx_generate_widget($type)
     $widgetUrl = "http://idx.showcaseidx.com/{$type}";
     $widget = showcaseidx_cachable_fetch($widgetUrl);
 
-    $searchHostPage = showcaseidx_base_url();
+    $searchHostPage = showcaseidx_base_url() . '/';
     $widget = str_replace('action_url', $searchHostPage, $widget);
 
     return <<<EOT
