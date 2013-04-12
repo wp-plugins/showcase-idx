@@ -3,7 +3,7 @@ Contributors: kanwei@gmail.com
 Tags: real estate, idx
 Requires at least: 3.0
 Tested up to: 3.5.1
-Stable tag: 1.3.2
+Stable tag: 1.3.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -36,7 +36,7 @@ Please visit [showcaseidx.com](http://showcaseidx.com) for information.
 
 == Changelog ==
 
-= 1.3.2 =
+= 1.3.3 =
 * Add docs on short codes in the admin page.
 
 = 1.3.1 =
