@@ -1,5 +1,6 @@
 <?php
 
+// SHORTCODE HANDLERS
 // curried shortcode generators
 function showcaseidx_widget_230() { return showcaseidx_generate_widget('widgets230'); }
 function showcaseidx_widget_465() { return showcaseidx_generate_widget('widgets465'); }
@@ -8,7 +9,7 @@ function showcaseidx_widget_930() { return showcaseidx_generate_widget('widgets9
 function showcaseidx_generate_widget($type)
 {
     $config = showcaseidx_generate_config();
-    $host   = showcaseidx_get_host();
+    $cdn    = "cdn.showcaseidx.com";
 
     $widgetUrl = "http://idx.showcaseidx.com/{$type}";
     $widget = showcaseidx_cachable_fetch($widgetUrl);
@@ -18,20 +19,40 @@ function showcaseidx_generate_widget($type)
 
     return <<<EOT
         {$config}
-        <link href="http://$host/css/widgets.css" media="screen, projection" rel="stylesheet" type="text/css" />
-        <script src="http://$host/js/mydx2.js"></script>
+        <link href="http://$cdn/css/widgets.css" media="screen, projection" rel="stylesheet" type="text/css" />
+        <script src="http://$cdn/js/mydx2.js"></script>
         {$widget}
 EOT;
 }
 
-function showcaseidx_show_app($seoPlaceholder = NULL, $defaultAppUrl = NULL) {
+function showcaseidx_show_app() {
+    return showcaseidx_generate_app();
+}
+
+function showcaseidx_show_hotsheet($scParams) {
+    $shortcodeAttrs = shortcode_atts(array(
+        'type' => 'custom',                 // custom, agent, office
+        'name' => '',                       // name of hotsheet; only referenced for type=custom
+    ), $scParams);
+    $searchConfigJSON = "{ 'hotsheet': { 'type': '{$shortcodeAttrs['type']}', 'name': '{$shortcodeAttrs['name']}' } }"; // WP might not have json_encode
+    return showcaseidx_generate_app("Hotsheet: {$name}", NULL, $searchConfigJSON);
+}
+
+/*************** HELPER FUNCTIONS FOR SHORTCODE GENERATORS **********************/
+function showcaseidx_generate_app($seoPlaceholder = NULL, $defaultAppUrl = NULL, $customSearchConfig = NULL) {
     $host = showcaseidx_get_host();
-    $config = showcaseidx_generate_config();
+    $cdn = "cdn.showcaseidx.com";
+
+    if ($customSearchConfig === NULL)
+    {
+        $customSearchConfig = showcaseidx_get_custom_widget_config();
+    }
+    $config = showcaseidx_generate_config($customSearchConfig);
     $defaultAppUrl = $defaultAppUrl ? showcaseidx_generate_default_app_url($defaultAppUrl) : NULL;
 
     return <<<EOT
         {$config}
-        <link href="http://$host/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
+        <link href="http://$cdn/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
         <link href='http://fonts.googleapis.com/css?family=Pontano+Sans&subset=latin' rel='stylesheet' type='text/css'>
         <link href='http://fonts.googleapis.com/css?family=Bitter:400,700&subset=latin' rel='stylesheet' type='text/css'>
         <link href='http://fonts.googleapis.com/css?family=Francois+One&subset=latin' rel='stylesheet' type='text/css'>
@@ -39,7 +60,7 @@ function showcaseidx_show_app($seoPlaceholder = NULL, $defaultAppUrl = NULL) {
         {$defaultAppUrl}
         <div id="mydx-container" ng-controller="AppController" ng-app="mydx2">
             <div ng-include="'http://$host/templates/layout.html'"></div>
-            <script src="http://$host/js/mydx2.js"></script>
+            <script src="http://$cdn/js/mydx2.js"></script>
             <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfITsP9KWNM61m1eT_8rsov2QoK932LCY&sensor=false"></script>
             <script type="text/javascript" src="http://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-50a2dde218aceee1"></script>
             <div class="mydx2-hide">
@@ -52,14 +73,13 @@ function showcaseidx_show_app($seoPlaceholder = NULL, $defaultAppUrl = NULL) {
 EOT;
 }
 
-/*************** HELPER FUNCTIONS FOR SHORTCODE GENERATORS **********************/
-function showcaseidx_generate_config() {
+function showcaseidx_generate_config($customSearchConfig = null) {
     $WEBSITE_ROOT = showcaseidx_get_host();
     $WEBSITE_ID = get_option('showcaseidx_api_key');
-    $CONF = 'null';
-    if (isset($_REQUEST['json']))
+
+    if ($customSearchConfig === NULL)
     {
-        $CONF = stripslashes($_REQUEST['json']);
+        $customSearchConfig = 'null';
     }
 
     return <<<EOT
@@ -67,10 +87,21 @@ function showcaseidx_generate_config() {
 var SHOWCASE_CONF = {
     WEBSITE_ROOT: "http://{$WEBSITE_ROOT}",
     WEBSITE_ID: "{$WEBSITE_ID}",
-    SEARCH_CONF: {$CONF}
+    SEARCH_CONF: {$customSearchConfig}
 };
 </script>
 EOT;
+}
+
+// grabs & sanitizes the "customSearchConfig" from the form data posted by widgets (see showcaseidx_generate_config)
+function showcaseidx_get_custom_widget_config()
+{
+    $customConfig = NULL;
+    if (isset($_REQUEST['json']))
+    {
+        $customConfig = stripslashes($_REQUEST['json']);
+    }
+    return $customConfig;
 }
 
 function showcaseidx_display_templated($content)

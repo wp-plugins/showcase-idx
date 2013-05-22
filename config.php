@@ -25,6 +25,7 @@ function showcaseidx_plugin_setup() {
 
     // register all of our shortcodes
     add_shortcode('showcaseidx',                'showcaseidx_show_app');
+    add_shortcode('showcaseidx_hotsheet',       'showcaseidx_show_hotsheet');
     add_shortcode('showcaseidx_widget_230',     'showcaseidx_widget_230');
     add_shortcode('showcaseidx_widget_465',     'showcaseidx_widget_465');
     add_shortcode('showcaseidx_widget_700',     'showcaseidx_widget_700');

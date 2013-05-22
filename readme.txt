@@ -3,7 +3,7 @@ Contributors: kanwei@gmail.com
 Tags: real estate, idx
 Requires at least: 3.0
 Tested up to: 3.5.1
-Stable tag: 1.3.3
+Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -35,6 +35,9 @@ You will need to be a member of an MLS board that provides IDX data, and have ac
 Please visit [showcaseidx.com](http://showcaseidx.com) for information.
 
 == Changelog ==
+
+= 1.4.0 =
+* Add hotsheet shortcodes.
 
 = 1.3.3 =
 * Add docs on short codes in the admin page.

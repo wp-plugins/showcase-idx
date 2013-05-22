@@ -126,6 +126,18 @@ function display_showcase_settings() {
             <td scope="row">Header / 930 pixels wide</td>
             <td>[showcaseidx_widget_930]</td>
         </tr>
+        <tr valign="top">
+            <td scope="row">Agent Listings Hotsheet</td>
+            <td>[showcaseidx_hotsheet type="agent"]</td>
+        </tr>
+        <tr valign="top">
+            <td scope="row">Office Listings Hotsheet</td>
+            <td>[showcaseidx_hotsheet type="office"]</td>
+        </tr>
+        <tr valign="top">
+            <td scope="row">Custom Hotsheet</td>
+            <td>[showcaseidx_hotsheet name="Custom Hotsheet Name"] <em><a target="_blank" href="<?php echo $adminPanelUrl; ?>/hotsheets">See all Hotsheets for exact shortcode names</a></em></td>
+        </tr>
     </table>
     <?php submit_button(); ?>
 </form>

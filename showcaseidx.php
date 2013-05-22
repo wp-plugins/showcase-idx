@@ -4,11 +4,11 @@ Plugin Name: Showcase IDX
 Plugin URI: http://showcaseidx.com/
 Description: Interactive, map-centric real-estate property search.
 Author: Kanwei Li
-Version: 1.3.3
+Version: 1.4.0
 Author URI: http://showcaseidx.com/
 */
 
-/*  Copyright 2012 Kanwei Li (email : kanwei@showcaseidx.com)
+/*  Copyright 2013 Kanwei Li (email : kanwei@showcaseidx.com)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License, version 2, as 
@@ -75,7 +75,7 @@ function showcaseidx_router()
         showcaseidx_seoify('Property Search', 'Search the MLS for real estate, both for sale and for rent, in your area.', 'real estate property search, mls search');
 
         $seoPlaceholder = '<a href="' . showcaseidx_base_url() . '/all">View all listings</a>'; //'http://idx.showcaseidx.com/sitemap/8');
-        $content = showcaseidx_show_app($seoPlaceholder);
+        $content = showcaseidx_generate_app($seoPlaceholder);
         showcaseidx_display_templated($content);
     }
 
@@ -96,7 +96,7 @@ function showcaseidx_router()
         $defaultAppUrl = "/listings/{$ListingId}";
 
         $seoPlaceholder = showcaseidx_cachable_fetch("http://idx.showcaseidx.com/seo_listing/{$ListingId}");
-        $content = showcaseidx_show_app($seoPlaceholder, $defaultAppUrl);
+        $content = showcaseidx_generate_app($seoPlaceholder, $defaultAppUrl);
         showcaseidx_display_templated($content);
     }
 
@@ -106,7 +106,7 @@ function showcaseidx_router()
         $defaultAppUrl = "/browse/{$CommunityId}";
 
         $seoPlaceholder = showcaseidx_cachable_fetch("http://idx.showcaseidx.com/seo_community/{$CommunityId}");
-        $content = showcaseidx_show_app($seoPlaceholder, $defaultAppUrl);
+        $content = showcaseidx_generate_app($seoPlaceholder, $defaultAppUrl);
         showcaseidx_display_templated($content);
     }
 }
