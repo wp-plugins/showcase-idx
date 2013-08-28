@@ -4,7 +4,7 @@ Plugin Name: Showcase IDX
 Plugin URI: http://showcaseidx.com/
 Description: Interactive, map-centric real-estate property search.
 Author: Kanwei Li
-Version: 2.0.0
+Version: 2.1.0
 Author URI: http://showcaseidx.com/
 */
 
@@ -69,6 +69,12 @@ function showcaseidx_cachebust_deactivation() {
     wp_clear_scheduled_hook('showcaseidx_cachebust');
 }
 
+function showcaseidx_add_scripts() {
+    wp_enqueue_script("showcaseidx_js", "http://cdn.showcaseidx.com/js/mydx2.js", array(), null, true);
+    wp_enqueue_style("showcaseidx_css", "http://cdn.showcaseidx.com/css/screen.css");
+}
+add_action( 'wp_enqueue_scripts', 'showcaseidx_add_scripts' );
+
 function showcaseidx_seo_listing_url_regex_callback($matches)
 {
     $baseUrl = showcaseidx_base_url();
@@ -80,8 +86,6 @@ function showcaseidx_seo_listing_url_regex_callback($matches)
 function showcaseidx_router()
 {
     global $wp_query;
-
-    $templateName = get_option('showcaseidx_template');
 
     if ( array_key_exists(SHOWCASEIDX_QUERY_VAR_SEARCH, $wp_query->query_vars ) ) {
         showcaseidx_seoify('Property Search', 'Search the MLS for real estate, both for sale and for rent, in your area.', 'real estate property search, mls search');
@@ -231,7 +235,7 @@ function showcaseidx_base_url()
 {
     // should detect if mod_rewrite works and if NOT do something like this...
     // return 'index.php?' . SHOWCASEIDX_QUERY_VAR_SEARCH;
-    return get_settings('home') . '/' . showcaseidx_get_prefix();
+    return get_option('home') . '/' . showcaseidx_get_prefix();
 }
 
 function showcaseidx_cachable_fetch($seoContentURL)

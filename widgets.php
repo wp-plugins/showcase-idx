@@ -16,11 +16,9 @@ function showcaseidx_generate_widget($type)
 
     $searchHostPage = showcaseidx_base_url() . '/';
     $widget = str_replace('action_url', $searchHostPage, $widget);
-
     return <<<EOT
         {$config}
         <link href="http://$cdn/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
-        <script src="http://$cdn/js/mydx2.js"></script>
         {$widget}
 EOT;
 }
@@ -46,8 +44,7 @@ function showcaseidx_generate_app($seoPlaceholder = NULL, $defaultAppUrl = NULL,
     }
     $config = showcaseidx_generate_config($customSearchConfig);
     $defaultAppUrl = $defaultAppUrl ? showcaseidx_generate_default_app_url($defaultAppUrl) : NULL;
-    $widget = showcaseidx_cachable_fetch("http://cdn.showcaseidx.com/wordpress");
-
+    $widget = showcaseidx_cachable_fetch("http://cdn.showcaseidx.com/wordpress_noscript");
     return <<<EOT
         {$config}
         {$defaultAppUrl}
@@ -91,6 +88,7 @@ function showcaseidx_get_custom_widget_config()
 
 function showcaseidx_display_templated($content)
 {
+    $templateName = get_option('showcaseidx_template');
     // select template....
     echo get_header($templateName);
     echo $content;

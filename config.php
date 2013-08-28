@@ -17,6 +17,7 @@ function showcaseidx_plugin_setup() {
     add_option('showcaseidx_api_host',                  '');
     add_option('showcaseidx_api_key',                   '');
     add_option('showcaseidx_template',                  '');
+    add_option('showcaseidx_setup_step',                '');
     add_option('showcaseidx_cache_version',             date('r'));
     add_option('showcaseidx_url_namespace',             SHOWCASEIDX_SEARCH_DEFAULT_URL_NAMESPACE);
 
