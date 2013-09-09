@@ -66,11 +66,15 @@ function showcaseidx_generate_config($customSearchConfig = null) {
 
     return <<<EOT
 <script type="text/javascript">
-var SHOWCASE_CONF = {
-    WEBSITE_ROOT: "http://{$WEBSITE_ROOT}",
-    WEBSITE_ID: "{$WEBSITE_ID}",
-    SEARCH_CONF: {$customSearchConfig}
-};
+if (!SHOWCASE_CONF) {
+    var SHOWCASE_CONF = {
+        WEBSITE_ROOT: "http://{$WEBSITE_ROOT}",
+        WEBSITE_ID: "{$WEBSITE_ID}"
+    };
+}
+if ($customSearchConfig) {
+    SHOWCASE_CONF.SEARCH_CONF = $customSearchConfig;
+}
 </script>
 EOT;
 }
