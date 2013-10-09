@@ -8,8 +8,9 @@ define('SHOWCASEIDX_QUERY_VAR_SEO_TITLE',           'ShowcaseSeoTitle');
 define('SHOWCASEIDX_QUERY_VAR_SEO_KEYWORDS',        'ShowcaseSeoKeywords');
 define('SHOWCASEIDX_QUERY_VAR_SEO_DESCRIPTION',     'ShowcaseSeoDescription');
 define('SHOWCASEIDX_QUERY_VAR_COMMUNITY',           'CommunityId');
-define('SHOWCASEIDX_QUERY_VAR_LISTINGS',            'Listings'   );
-define('SHOWCASEIDX_QUERY_VAR_LISTING',             'ListingId'  );
+define('SHOWCASEIDX_QUERY_VAR_LISTINGS',            'Listings');
+define('SHOWCASEIDX_QUERY_VAR_LISTINGS_PAGENUM',    'ListingsPageNum');
+define('SHOWCASEIDX_QUERY_VAR_LISTING',             'ListingId');
 
 // Plugin Bootstrap / hook installation
 function showcaseidx_plugin_setup() {

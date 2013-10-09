@@ -4,7 +4,7 @@ Plugin Name: Showcase IDX
 Plugin URI: http://showcaseidx.com/
 Description: Interactive, map-centric real-estate property search.
 Author: Kanwei Li
-Version: 2.1.1
+Version: 2.1.2
 Author URI: http://showcaseidx.com/
 */
 
@@ -98,9 +98,46 @@ function showcaseidx_router()
     if (array_key_exists(SHOWCASEIDX_QUERY_VAR_LISTINGS, $wp_query->query_vars)) {
         showcaseidx_seoify('Real Estate For Sale & For Rent', 'All listings For Sale & For Rent in the MLS.', 'real estate for sale, real estate for rent');
 
+        // pages go 0..n
+        $currentPageNum = (int) $wp_query->get(SHOWCASEIDX_QUERY_VAR_LISTINGS_PAGENUM);
         $apiKey = get_option('showcaseidx_api_key');
-        $content = showcaseidx_cachable_fetch("http://idx.showcaseidx.com/sitemap/{$apiKey}");
-        $content = preg_replace_callback('/<a href="#\/listings\/([^"]+)" title="([^"]+)"/', 'showcaseidx_seo_listing_url_regex_callback', $content);
+
+        // get root "all" page
+        $proxyContentBaseUrl = "http://idx.showcaseidx.com/seo/{$apiKey}/"; // trailing / required
+        $sitemap = showcaseidx_cachable_fetch($proxyContentBaseUrl);
+
+        $pageMatches = array();
+        $count = preg_match_all('/<a href="([^"]+)"/', $sitemap, $pageMatches);
+        if ($count === 0)
+        {
+            wp_redirect( showcaseidx_base_url(), 302 );
+            exit();
+        }
+        $lastPageNum = $count;
+
+        $currentPageName = $pageMatches[1][$currentPageNum];
+        $proxyContentPageUrl = "{$proxyContentBaseUrl}{$currentPageName}";
+        $currentPageContent = showcaseidx_cachable_fetch($proxyContentPageUrl);
+
+        // page content
+        $content = preg_replace_callback('/<a href="#\/listings\/([^"]+)" title="([^"]+)"/', 'showcaseidx_seo_listing_url_regex_callback', $currentPageContent);
+
+        // pagination
+        $seoBaseUrl = showcaseidx_base_url() . '/all/';
+        if ($currentPageNum != 0)
+        {
+            $prevPageNum = $currentPageNum-1;
+            $content .= '<link rel="prev" href="' . $seoBaseUrl . $prevPageNum . '" />';
+            $content .= '<a href="' . $seoBaseUrl . $prevPageNum . '">prev</a>';
+            $content .= ' ';
+        }
+        if ($currentPageNum < $lastPageNum)
+        {
+            $nextPageNum = $currentPageNum+1;
+            $content .= '<link rel="next" href="' . $seoBaseUrl . $nextPageNum . '" />';
+            $content .= '<a href="' . $seoBaseUrl . $nextPageNum . '">next</a>';
+        }
+
         showcaseidx_display_templated("<h1>Real Estate For Sale &amp; For Rent</h1>{$content}");
     }
 
@@ -139,11 +176,12 @@ function showcaseidx_install_routing() {
 
     // map LISTINGS page (seo list for all listings)
     add_rewrite_rule(
-        showcaseidx_get_prefix() . '/all/?$',
-        'index.php?' . SHOWCASEIDX_QUERY_VAR_LISTINGS,
+        showcaseidx_get_prefix() . '/all/?([0-9]+)?.*$',
+        'index.php?' . SHOWCASEIDX_QUERY_VAR_LISTINGS . '&' . SHOWCASEIDX_QUERY_VAR_LISTINGS_PAGENUM . '=$1',
         'top'
     );
     add_rewrite_tag('%' . SHOWCASEIDX_QUERY_VAR_LISTINGS . '%', '([^&]+)');
+    add_rewrite_tag('%' . SHOWCASEIDX_QUERY_VAR_LISTINGS_PAGENUM . '%', '([^&]+)');
     
     // map LISTING pages
     add_rewrite_rule(

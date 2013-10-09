@@ -24,7 +24,8 @@ EOT;
 }
 
 function showcaseidx_show_app() {
-    return showcaseidx_generate_app();
+    $seoPlaceholder = '<a href="' . showcaseidx_base_url() . '/all">View all listings</a>';
+    return showcaseidx_generate_app($seoPlaceholder);
 }
 
 function showcaseidx_show_hotsheet($scParams) {
