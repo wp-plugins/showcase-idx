@@ -32,8 +32,16 @@ function showcaseidx_show_hotsheet($scParams) {
     $shortcodeAttrs = shortcode_atts(array(
         'type' => 'custom',                 // custom, agent, office
         'name' => '',                       // name of hotsheet; only referenced for type=custom
+        'hide_map' => 'false',
+        'hide_search' => 'false',
+        'recent' => '',
     ), $scParams);
-    $searchConfigJSON = "{ 'hotsheet': { 'type': '{$shortcodeAttrs['type']}', 'name': '{$shortcodeAttrs['name']}' } }"; // WP might not have json_encode
+    $searchConfigJSON = "{ 'hotsheet': { 'type': '{$shortcodeAttrs['type']}', 
+                                         'name': '{$shortcodeAttrs['name']}',
+                                         'hide_map': {$shortcodeAttrs['hide_map']},
+                                         'hide_search': {$shortcodeAttrs['hide_search']},
+                                         'recent': '{$shortcodeAttrs['recent']}'
+                                          } }"; // WP might not have json_encode
     return showcaseidx_generate_app("Hotsheet: {$name}", NULL, $searchConfigJSON);
 }
 

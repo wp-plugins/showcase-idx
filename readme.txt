@@ -2,12 +2,14 @@
 Contributors: showcaseidx
 Tags: real estate search, idx search, idx, showcase idx, search plugin
 Requires at least: 3.0.1
-Tested up to: 3.6
-Stable tag: 2.1.2
+Tested up to: 3.7
+Stable tag: 2.1.3
 
 A simple, beautiful real estate search plugin for your Wordpress website, that's both indexable and responsive.
 
 == Description ==
+[youtube http://www.youtube.com/watch?v=omIVgRAGaQI]
+
 [Showcase IDX](http://showcaseidx.com/ "Showcase IDX Website") lets real estate agents embed a beautifully simple, yet surprisingly powerful, home search into their site. Focusing on your visitor's experience, Showcase IDX gives your users a great experience and a reason to come back to your website to continue their home search. Built using the latest technologies that allows us to regularly upgrade and tweak the product, so your investment continues to grow and evolve over time.
 
 = Simple and Beautiful =
@@ -33,7 +35,6 @@ Showcase IDX has been around for 10 years providing real estate websites and we'
 *   Foreclosures and short sales
 *   Consumer dashboard
 *   Saved searches
-*   Saved listing and search alert emails
 *   Search Engine Optimized
 *   Fully MLS compliant
 *   Easy to install
@@ -98,13 +99,6 @@ The speed that it takes to load a page is very important to have a fast website,
 **Traffic.**
 It's also important to understand that adding any IDX from any company to your site will not guarantee a lot of traffic and leads. It's our mission to convert as many of your website users to good leads. Of course, we have SEO optimization built into the site, but consider how many other agents in your market have IDX search too, it's exceedingly competitive. Realistically, you need to add additional useful content to the your site that is unique and will attract search traffic, or add online-search advertising to your marketing efforts. We have seen this work out very well for a number of our customers. Just to be clear, we're not saying you won't get free search traffic with our plugin, you will, but there are other investments that you can make in your website that can give you more of a return. 
 
-== Screenshots ==
-
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets 
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png` 
-(or jpg, jpeg, gif).
-2. This is the second screen shot
 
 == Changelog ==
 
@@ -119,6 +113,9 @@ directory take precedence. For example, `/assets/screenshot-1.png` would win ove
 
 = 2.1.2 =
 * Improved SEO
+
+= 2.1.3 =
+* hide_map and hide_search for hotsheets
 
 == Upgrade Notice ==
 
