@@ -8,8 +8,9 @@ define('SHOWCASEIDX_QUERY_VAR_SEO_TITLE',           'ShowcaseSeoTitle');
 define('SHOWCASEIDX_QUERY_VAR_SEO_KEYWORDS',        'ShowcaseSeoKeywords');
 define('SHOWCASEIDX_QUERY_VAR_SEO_DESCRIPTION',     'ShowcaseSeoDescription');
 define('SHOWCASEIDX_QUERY_VAR_COMMUNITY',           'CommunityId');
-define('SHOWCASEIDX_QUERY_VAR_LISTINGS',            'Listings'   );
-define('SHOWCASEIDX_QUERY_VAR_LISTING',             'ListingId'  );
+define('SHOWCASEIDX_QUERY_VAR_LISTINGS',            'Listings');
+define('SHOWCASEIDX_QUERY_VAR_LISTINGS_PAGENUM',    'ListingsPageNum');
+define('SHOWCASEIDX_QUERY_VAR_LISTING',             'ListingId');
 
 // Plugin Bootstrap / hook installation
 function showcaseidx_plugin_setup() {
@@ -17,6 +18,7 @@ function showcaseidx_plugin_setup() {
     add_option('showcaseidx_api_host',                  '');
     add_option('showcaseidx_api_key',                   '');
     add_option('showcaseidx_template',                  '');
+    add_option('showcaseidx_setup_step',                '');
     add_option('showcaseidx_cache_version',             date('r'));
     add_option('showcaseidx_url_namespace',             SHOWCASEIDX_SEARCH_DEFAULT_URL_NAMESPACE);
 
@@ -25,6 +27,7 @@ function showcaseidx_plugin_setup() {
 
     // register all of our shortcodes
     add_shortcode('showcaseidx',                'showcaseidx_show_app');
+    add_shortcode('showcaseidx_hotsheet',       'showcaseidx_show_hotsheet');
     add_shortcode('showcaseidx_widget_230',     'showcaseidx_widget_230');
     add_shortcode('showcaseidx_widget_465',     'showcaseidx_widget_465');
     add_shortcode('showcaseidx_widget_700',     'showcaseidx_widget_700');
