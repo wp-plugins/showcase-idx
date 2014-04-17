@@ -8,7 +8,7 @@ add_action( 'admin_menu', 'showcaseidx_create_menu_page' );
 add_action( 'admin_init', 'register_mysettings' );
 
 function showcaseidx_create_menu_page() {
-    add_menu_page("Showcase IDX Admin", "Showcase IDX", "manage_options", "showcaseidx", "display_showcase_settings", null, 100);
+    add_menu_page("Showcase IDX Admin", "Showcase IDX", "manage_options", "showcaseidx", "display_showcase_settings", null, '100.1337');
 }
 
 function register_mysettings() {  

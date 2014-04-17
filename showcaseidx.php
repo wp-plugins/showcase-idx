@@ -4,7 +4,7 @@ Plugin Name: Showcase IDX
 Plugin URI: http://showcaseidx.com/
 Description: Interactive, map-centric real-estate property search.
 Author: Kanwei Li
-Version: 2.1.4
+Version: 2.1.5
 Author URI: http://showcaseidx.com/
 */
 
@@ -58,6 +58,7 @@ add_action('plugins_loaded', 'showcaseidx_plugin_setup');
 register_activation_hook(__FILE__, 'showcaseidx_activation_hook');
 
 register_activation_hook(__FILE__, 'showcaseidx_cachebust_activation');
+register_activation_hook(__FILE__, 'showcaseidx_bust_cache');
 add_action('showcaseidx_cachebust', 'showcaseidx_bust_cache');
 register_deactivation_hook(__FILE__, 'showcaseidx_cachebust_deactivation'); 
 
