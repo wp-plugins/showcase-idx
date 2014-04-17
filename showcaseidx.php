@@ -4,11 +4,11 @@ Plugin Name: Showcase IDX
 Plugin URI: http://showcaseidx.com/
 Description: Interactive, map-centric real-estate property search.
 Author: Kanwei Li
-Version: 1.3.3
+Version: 2.1.5
 Author URI: http://showcaseidx.com/
 */
 
-/*  Copyright 2012 Kanwei Li (email : kanwei@showcaseidx.com)
+/*  Copyright 2013 Kanwei Li (email : kanwei@showcaseidx.com)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License, version 2, as 
@@ -55,7 +55,26 @@ require_once(dirname(__FILE__) . "/admin.php");
 
 // install our plugin
 add_action('plugins_loaded', 'showcaseidx_plugin_setup');
-register_activation_hook('showcaseidx/showcaseidx.php', 'showcaseidx_activation_hook');
+register_activation_hook(__FILE__, 'showcaseidx_activation_hook');
+
+register_activation_hook(__FILE__, 'showcaseidx_cachebust_activation');
+register_activation_hook(__FILE__, 'showcaseidx_bust_cache');
+add_action('showcaseidx_cachebust', 'showcaseidx_bust_cache');
+register_deactivation_hook(__FILE__, 'showcaseidx_cachebust_deactivation'); 
+
+function showcaseidx_cachebust_activation() {
+    wp_schedule_event(time(), 'hourly', 'showcaseidx_cachebust');
+}
+
+function showcaseidx_cachebust_deactivation() {
+    wp_clear_scheduled_hook('showcaseidx_cachebust');
+}
+
+function showcaseidx_add_scripts() {
+    wp_enqueue_script("showcaseidx_js", "http://cdn.showcaseidx.com/js/mydx2.js", array(), null, true);
+    wp_enqueue_style("showcaseidx_css", "http://cdn.showcaseidx.com/css/screen.css");
+}
+add_action( 'wp_enqueue_scripts', 'showcaseidx_add_scripts' );
 
 function showcaseidx_seo_listing_url_regex_callback($matches)
 {
@@ -69,22 +88,57 @@ function showcaseidx_router()
 {
     global $wp_query;
 
-    $templateName = get_option('showcaseidx_template');
-
     if ( array_key_exists(SHOWCASEIDX_QUERY_VAR_SEARCH, $wp_query->query_vars ) ) {
         showcaseidx_seoify('Property Search', 'Search the MLS for real estate, both for sale and for rent, in your area.', 'real estate property search, mls search');
 
-        $seoPlaceholder = '<a href="' . showcaseidx_base_url() . '/all">View all listings</a>'; //'http://idx.showcaseidx.com/sitemap/8');
-        $content = showcaseidx_show_app($seoPlaceholder);
+        $seoPlaceholder = '<a href="' . showcaseidx_base_url() . '/all">View all listings</a>';
+        $content = showcaseidx_generate_app($seoPlaceholder);
         showcaseidx_display_templated($content);
     }
 
     if (array_key_exists(SHOWCASEIDX_QUERY_VAR_LISTINGS, $wp_query->query_vars)) {
         showcaseidx_seoify('Real Estate For Sale & For Rent', 'All listings For Sale & For Rent in the MLS.', 'real estate for sale, real estate for rent');
 
+        // pages go 0..n
+        $currentPageNum = (int) $wp_query->get(SHOWCASEIDX_QUERY_VAR_LISTINGS_PAGENUM);
         $apiKey = get_option('showcaseidx_api_key');
-        $content = showcaseidx_cachable_fetch("http://idx.showcaseidx.com/sitemap/{$apiKey}");
-        $content = preg_replace_callback('/<a href="#\/listings\/([^"]+)" title="([^"]+)"/', 'showcaseidx_seo_listing_url_regex_callback', $content);
+
+        // get root "all" page
+        $proxyContentBaseUrl = "http://idx.showcaseidx.com/seo/{$apiKey}/"; // trailing / required
+        $sitemap = showcaseidx_cachable_fetch($proxyContentBaseUrl);
+
+        $pageMatches = array();
+        $count = preg_match_all('/<a href="([^"]+)"/', $sitemap, $pageMatches);
+        if ($count === 0)
+        {
+            wp_redirect( showcaseidx_base_url(), 302 );
+            exit();
+        }
+        $lastPageNum = $count;
+
+        $currentPageName = $pageMatches[1][$currentPageNum];
+        $proxyContentPageUrl = "{$proxyContentBaseUrl}{$currentPageName}";
+        $currentPageContent = showcaseidx_cachable_fetch($proxyContentPageUrl);
+
+        // page content
+        $content = preg_replace_callback('/<a href="#\/listings\/([^"]+)" title="([^"]+)"/', 'showcaseidx_seo_listing_url_regex_callback', $currentPageContent);
+
+        // pagination
+        $seoBaseUrl = showcaseidx_base_url() . '/all/';
+        if ($currentPageNum != 0)
+        {
+            $prevPageNum = $currentPageNum-1;
+            $content .= '<link rel="prev" href="' . $seoBaseUrl . $prevPageNum . '" />';
+            $content .= '<a href="' . $seoBaseUrl . $prevPageNum . '">prev</a>';
+            $content .= ' ';
+        }
+        if ($currentPageNum < $lastPageNum)
+        {
+            $nextPageNum = $currentPageNum+1;
+            $content .= '<link rel="next" href="' . $seoBaseUrl . $nextPageNum . '" />';
+            $content .= '<a href="' . $seoBaseUrl . $nextPageNum . '">next</a>';
+        }
+
         showcaseidx_display_templated("<h1>Real Estate For Sale &amp; For Rent</h1>{$content}");
     }
 
@@ -96,7 +150,7 @@ function showcaseidx_router()
         $defaultAppUrl = "/listings/{$ListingId}";
 
         $seoPlaceholder = showcaseidx_cachable_fetch("http://idx.showcaseidx.com/seo_listing/{$ListingId}");
-        $content = showcaseidx_show_app($seoPlaceholder, $defaultAppUrl);
+        $content = showcaseidx_generate_app($seoPlaceholder, $defaultAppUrl);
         showcaseidx_display_templated($content);
     }
 
@@ -106,7 +160,7 @@ function showcaseidx_router()
         $defaultAppUrl = "/browse/{$CommunityId}";
 
         $seoPlaceholder = showcaseidx_cachable_fetch("http://idx.showcaseidx.com/seo_community/{$CommunityId}");
-        $content = showcaseidx_show_app($seoPlaceholder, $defaultAppUrl);
+        $content = showcaseidx_generate_app($seoPlaceholder, $defaultAppUrl);
         showcaseidx_display_templated($content);
     }
 }
@@ -123,11 +177,12 @@ function showcaseidx_install_routing() {
 
     // map LISTINGS page (seo list for all listings)
     add_rewrite_rule(
-        showcaseidx_get_prefix() . '/all/?$',
-        'index.php?' . SHOWCASEIDX_QUERY_VAR_LISTINGS,
+        showcaseidx_get_prefix() . '/all/?([0-9]+)?.*$',
+        'index.php?' . SHOWCASEIDX_QUERY_VAR_LISTINGS . '&' . SHOWCASEIDX_QUERY_VAR_LISTINGS_PAGENUM . '=$1',
         'top'
     );
     add_rewrite_tag('%' . SHOWCASEIDX_QUERY_VAR_LISTINGS . '%', '([^&]+)');
+    add_rewrite_tag('%' . SHOWCASEIDX_QUERY_VAR_LISTINGS_PAGENUM . '%', '([^&]+)');
     
     // map LISTING pages
     add_rewrite_rule(
@@ -219,7 +274,7 @@ function showcaseidx_base_url()
 {
     // should detect if mod_rewrite works and if NOT do something like this...
     // return 'index.php?' . SHOWCASEIDX_QUERY_VAR_SEARCH;
-    return get_settings('home') . '/' . showcaseidx_get_prefix();
+    return get_option('home') . '/' . showcaseidx_get_prefix();
 }
 
 function showcaseidx_cachable_fetch($seoContentURL)
@@ -230,7 +285,7 @@ function showcaseidx_cachable_fetch($seoContentURL)
         $seoContent = "View all listings";
 
         // this code runs when there is no valid transient set
-        $resp = wp_remote_get($seoContentURL);
+        $resp = wp_remote_get($seoContentURL, array('timeout' => 60));
         if ($resp instanceof WP_Error or wp_remote_retrieve_response_code($resp) != 200)
         {
             $seoContent = 'SEO PROXY ERROR, ' . print_r($resp, true);
@@ -277,5 +332,5 @@ function showcaseidx_notify_hq_of_activation()
     }
     $pingUrl = "http://showcasere.com/4/formmail.php?{$queryString}";
 
-    wp_remote_get($pingUrl);
+    wp_remote_get($pingUrl, array('timeout' => 60));
 }
