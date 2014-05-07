@@ -65,7 +65,6 @@ EOT;
 }
 
 function showcaseidx_generate_config($customSearchConfig = null) {
-    $WEBSITE_ROOT = showcaseidx_get_host();
     $WEBSITE_ID = get_option('showcaseidx_api_key');
 
     if ($customSearchConfig === NULL)
@@ -77,7 +76,6 @@ function showcaseidx_generate_config($customSearchConfig = null) {
 <script type="text/javascript">
 if (!SHOWCASE_CONF) {
     var SHOWCASE_CONF = {
-        WEBSITE_ROOT: "http://{$WEBSITE_ROOT}",
         WEBSITE_ID: "{$WEBSITE_ID}"
     };
 }
