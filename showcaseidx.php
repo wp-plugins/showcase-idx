@@ -4,7 +4,7 @@ Plugin Name: Showcase IDX
 Plugin URI: http://showcaseidx.com/
 Description: Interactive, map-centric real-estate property search.
 Author: Kanwei Li
-Version: 2.1.7
+Version: 2.1.8
 Author URI: http://showcaseidx.com/
 */
 
@@ -146,17 +146,17 @@ function showcaseidx_router()
         $seo = $wp_query->get(SHOWCASEIDX_QUERY_VAR_SEO_TITLE);
         showcaseidx_seoify($seo, "Real estate information on {$seo}. See pictures, current price, sale and rental status, and more.", "{$seo}, {$seo} for sale, {$seo} for rent");
 
-        $ListingId = trim($_REQUEST[SHOWCASEIDX_QUERY_VAR_LISTING], ' /');
-        $defaultAppUrl = "/listings/{$ListingId}";
+        $listingId = trim($wp_query->get(SHOWCASEIDX_QUERY_VAR_LISTING), ' /');
+        $defaultAppUrl = "/listings/{$listingId}";
 
-        $seoPlaceholder = showcaseidx_cachable_fetch("http://idx.showcaseidx.com/seo_listing/{$ListingId}");
+        $seoPlaceholder = showcaseidx_cachable_fetch("http://idx.showcaseidx.com/seo_listing/{$listingId}");
         $content = showcaseidx_generate_app($seoPlaceholder, $defaultAppUrl);
         showcaseidx_display_templated($content);
     }
 
     // temporarily disabled pending community-by-id data refector
     if (0 && array_key_exists(SHOWCASEIDX_QUERY_VAR_COMMUNITY, $wp_query->query_vars)) {
-        $CommunityId = trim($_REQUEST[SHOWCASEIDX_QUERY_VAR_COMMUNITY], ' /');
+        $CommunityId = trim($wp_query->get(SHOWCASEIDX_QUERY_VAR_COMMUNITY), ' /');
         $defaultAppUrl = "/browse/{$CommunityId}";
 
         $seoPlaceholder = showcaseidx_cachable_fetch("http://idx.showcaseidx.com/seo_community/{$CommunityId}");
@@ -178,7 +178,7 @@ function showcaseidx_install_routing() {
     // map LISTINGS page (seo list for all listings)
     add_rewrite_rule(
         showcaseidx_get_prefix() . '/all/?([0-9]+)?.*$',
-        'index.php?' . SHOWCASEIDX_QUERY_VAR_LISTINGS . '&' . SHOWCASEIDX_QUERY_VAR_LISTINGS_PAGENUM . '=$1',
+        'index.php?' . SHOWCASEIDX_QUERY_VAR_LISTINGS . '&' . SHOWCASEIDX_QUERY_VAR_LISTINGS_PAGENUM . '=$matches[1]',
         'top'
     );
     add_rewrite_tag('%' . SHOWCASEIDX_QUERY_VAR_LISTINGS . '%', '([^&]+)');
@@ -187,7 +187,7 @@ function showcaseidx_install_routing() {
     // map LISTING pages
     add_rewrite_rule(
         showcaseidx_get_prefix() . '/(.*)/([0-9]+_[a-zA-Z0-9]+)/?$',
-        'index.php?' . SHOWCASEIDX_QUERY_VAR_LISTING . '=$2&' . SHOWCASEIDX_QUERY_VAR_SEO_TITLE . '=$1',
+        'index.php?' . SHOWCASEIDX_QUERY_VAR_LISTING . '=$matches[2]&' . SHOWCASEIDX_QUERY_VAR_SEO_TITLE . '=$matches[1]',
         'top'
     );
     add_rewrite_tag('%' . SHOWCASEIDX_QUERY_VAR_LISTING . '%', '([^&]+)');
@@ -195,7 +195,7 @@ function showcaseidx_install_routing() {
     // map COMMUNITY pages
     add_rewrite_rule(
         showcaseidx_get_prefix() . '/?.*/([0-9]+)/?$',
-        'index.php?' . SHOWCASEIDX_QUERY_VAR_COMMUNITY . '=$1',
+        'index.php?' . SHOWCASEIDX_QUERY_VAR_COMMUNITY . '=$matches[1]',
         'top'
     );
     add_rewrite_tag('%' . SHOWCASEIDX_QUERY_VAR_COMMUNITY . '%', '([^&]+)');
@@ -203,7 +203,7 @@ function showcaseidx_install_routing() {
     // map our widget/form response handler
     add_rewrite_rule(
         showcaseidx_get_prefix() . '/?(.*)$',
-        'index.php?' . SHOWCASEIDX_QUERY_VAR_SEARCH . '&$1',
+        'index.php?' . SHOWCASEIDX_QUERY_VAR_SEARCH . '&$matches[1]',
         'top'
     );
     add_rewrite_tag('%' . SHOWCASEIDX_QUERY_VAR_SEARCH . '%', '([^&]+)');
