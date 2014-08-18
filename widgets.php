@@ -73,6 +73,7 @@ function showcaseidx_generate_config($customSearchConfig = null) {
     }
 
     return <<<EOT
+<div></div> <!-- Hack for some plugin removing script tags -->
 <script type="text/javascript">
 if (!SHOWCASE_CONF) {
     var SHOWCASE_CONF = {

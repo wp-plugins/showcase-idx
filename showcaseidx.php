@@ -4,7 +4,7 @@ Plugin Name: Showcase IDX
 Plugin URI: http://showcaseidx.com/
 Description: Interactive, map-centric real-estate property search.
 Author: Kanwei Li
-Version: 2.1.7
+Version: 2.1.9
 Author URI: http://showcaseidx.com/
 */
 
@@ -47,6 +47,7 @@ Author URI: http://showcaseidx.com/
  ***************************************************************************/
 
 global $wp_version;
+$showcaseidx_seo_data = array('url' => NULL);
 
 require_once(ABSPATH . "wp-admin/includes/plugin.php");
 require_once(dirname(__FILE__) . "/config.php");
@@ -89,7 +90,8 @@ function showcaseidx_router()
     global $wp_query;
 
     if ( array_key_exists(SHOWCASEIDX_QUERY_VAR_SEARCH, $wp_query->query_vars ) ) {
-        showcaseidx_seoify('Property Search', 'Search the MLS for real estate, both for sale and for rent, in your area.', 'real estate property search, mls search');
+        //  Main Search page
+        showcaseidx_seoify('Property Search', 'Search the MLS for real estate, both for sale and for rent, in your area.', 'real estate property search, mls search', showcaseidx_base_url());
 
         $seoPlaceholder = '<a href="' . showcaseidx_base_url() . '/all">View all listings</a>';
         $content = showcaseidx_generate_app($seoPlaceholder);
@@ -97,8 +99,8 @@ function showcaseidx_router()
     }
 
     if (array_key_exists(SHOWCASEIDX_QUERY_VAR_LISTINGS, $wp_query->query_vars)) {
-        showcaseidx_seoify('Real Estate For Sale & For Rent', 'All listings For Sale & For Rent in the MLS.', 'real estate for sale, real estate for rent');
-
+        // Index page for SEO pages (/all), and pagination pages
+        
         // pages go 0..n
         $currentPageNum = (int) $wp_query->get(SHOWCASEIDX_QUERY_VAR_LISTINGS_PAGENUM);
         $apiKey = get_option('showcaseidx_api_key');
@@ -125,8 +127,11 @@ function showcaseidx_router()
 
         // pagination
         $seoBaseUrl = showcaseidx_base_url() . '/all/';
+        $seoCurrentUrl = $seoBaseUrl;
+
         if ($currentPageNum != 0)
         {
+            $seoCurrentUrl .= "{$currentPageNum}/";
             $prevPageNum = $currentPageNum-1;
             $content .= '<link rel="prev" href="' . $seoBaseUrl . $prevPageNum . '" />';
             $content .= '<a href="' . $seoBaseUrl . $prevPageNum . '">prev</a>';
@@ -139,24 +144,29 @@ function showcaseidx_router()
             $content .= '<a href="' . $seoBaseUrl . $nextPageNum . '">next</a>';
         }
 
+        showcaseidx_seoify('Real Estate For Sale & For Rent', 'All listings For Sale & For Rent in the MLS.', 'real estate for sale, real estate for rent', $seoCurrentUrl);
         showcaseidx_display_templated("<h1>Real Estate For Sale &amp; For Rent</h1>{$content}");
     }
 
     if (array_key_exists(SHOWCASEIDX_QUERY_VAR_LISTING, $wp_query->query_vars)) {
-        $seo = $wp_query->get(SHOWCASEIDX_QUERY_VAR_SEO_TITLE);
-        showcaseidx_seoify($seo, "Real estate information on {$seo}. See pictures, current price, sale and rental status, and more.", "{$seo}, {$seo} for sale, {$seo} for rent");
+        // SEO page for listing
+        $seo = urldecode($wp_query->get(SHOWCASEIDX_QUERY_VAR_SEO_TITLE));
 
-        $ListingId = trim($_REQUEST[SHOWCASEIDX_QUERY_VAR_LISTING], ' /');
-        $defaultAppUrl = "/listings/{$ListingId}";
+        $listingId = trim($wp_query->get(SHOWCASEIDX_QUERY_VAR_LISTING), ' /');
+        $defaultAppUrl = "/listings/{$listingId}";
+        $seoUrl = showcaseidx_base_url() . "/" . urlencode($seo) . "/{$listingId}";
 
-        $seoPlaceholder = showcaseidx_cachable_fetch("http://idx.showcaseidx.com/seo_listing/{$ListingId}");
+        $seoPlaceholder = showcaseidx_cachable_fetch("http://idx.showcaseidx.com/seo_listing/{$listingId}");
         $content = showcaseidx_generate_app($seoPlaceholder, $defaultAppUrl);
+
+        showcaseidx_seoify($seo, "Real estate information on {$seo}. See pictures, current price, sale and rental status, and more.", "{$seo}, {$seo} for sale, {$seo} for rent", $seoUrl);
+
         showcaseidx_display_templated($content);
     }
 
     // temporarily disabled pending community-by-id data refector
     if (0 && array_key_exists(SHOWCASEIDX_QUERY_VAR_COMMUNITY, $wp_query->query_vars)) {
-        $CommunityId = trim($_REQUEST[SHOWCASEIDX_QUERY_VAR_COMMUNITY], ' /');
+        $CommunityId = trim($wp_query->get(SHOWCASEIDX_QUERY_VAR_COMMUNITY), ' /');
         $defaultAppUrl = "/browse/{$CommunityId}";
 
         $seoPlaceholder = showcaseidx_cachable_fetch("http://idx.showcaseidx.com/seo_community/{$CommunityId}");
@@ -178,7 +188,7 @@ function showcaseidx_install_routing() {
     // map LISTINGS page (seo list for all listings)
     add_rewrite_rule(
         showcaseidx_get_prefix() . '/all/?([0-9]+)?.*$',
-        'index.php?' . SHOWCASEIDX_QUERY_VAR_LISTINGS . '&' . SHOWCASEIDX_QUERY_VAR_LISTINGS_PAGENUM . '=$1',
+        'index.php?' . SHOWCASEIDX_QUERY_VAR_LISTINGS . '&' . SHOWCASEIDX_QUERY_VAR_LISTINGS_PAGENUM . '=$matches[1]',
         'top'
     );
     add_rewrite_tag('%' . SHOWCASEIDX_QUERY_VAR_LISTINGS . '%', '([^&]+)');
@@ -187,7 +197,7 @@ function showcaseidx_install_routing() {
     // map LISTING pages
     add_rewrite_rule(
         showcaseidx_get_prefix() . '/(.*)/([0-9]+_[a-zA-Z0-9]+)/?$',
-        'index.php?' . SHOWCASEIDX_QUERY_VAR_LISTING . '=$2&' . SHOWCASEIDX_QUERY_VAR_SEO_TITLE . '=$1',
+        'index.php?' . SHOWCASEIDX_QUERY_VAR_LISTING . '=$matches[2]&' . SHOWCASEIDX_QUERY_VAR_SEO_TITLE . '=$matches[1]',
         'top'
     );
     add_rewrite_tag('%' . SHOWCASEIDX_QUERY_VAR_LISTING . '%', '([^&]+)');
@@ -195,7 +205,7 @@ function showcaseidx_install_routing() {
     // map COMMUNITY pages
     add_rewrite_rule(
         showcaseidx_get_prefix() . '/?.*/([0-9]+)/?$',
-        'index.php?' . SHOWCASEIDX_QUERY_VAR_COMMUNITY . '=$1',
+        'index.php?' . SHOWCASEIDX_QUERY_VAR_COMMUNITY . '=$matches[1]',
         'top'
     );
     add_rewrite_tag('%' . SHOWCASEIDX_QUERY_VAR_COMMUNITY . '%', '([^&]+)');
@@ -203,7 +213,7 @@ function showcaseidx_install_routing() {
     // map our widget/form response handler
     add_rewrite_rule(
         showcaseidx_get_prefix() . '/?(.*)$',
-        'index.php?' . SHOWCASEIDX_QUERY_VAR_SEARCH . '&$1',
+        'index.php?' . SHOWCASEIDX_QUERY_VAR_SEARCH . '&$matches[1]',
         'top'
     );
     add_rewrite_tag('%' . SHOWCASEIDX_QUERY_VAR_SEARCH . '%', '([^&]+)');
@@ -213,12 +223,13 @@ function showcaseidx_install_routing() {
 //    add_permastruct('browse-properties', SHOWCASEIDX_BROWSE_DEFAULT_URL_NAMESPACE . '/%' . SHOWCASEIDX_QUERY_VAR_BROWSE_BY_REGION . '%/%' . SHOWCASEIDX_QUERY_VAR_BROWSE_BY_REGION_ID . '%', array('with_front' => false, 'feed' => false, 'paged' => false));
 }
 
-function showcaseidx_wp_title($title, $sep)
+function showcaseidx_wp_title($title, $sep = "---")
 {
     global $wp_query;
 
     $localTitle = $wp_query->get(SHOWCASEIDX_QUERY_VAR_SEO_TITLE);
     $localTitle = trim($localTitle);
+    $localTitle = urldecode($localTitle);
     $localTitle = htmlentities($localTitle);
     if (empty($localTitle))
     {
@@ -230,16 +241,29 @@ function showcaseidx_wp_title($title, $sep)
     }
 }
 
-function showcaseidx_seoify($title, $description = NULL, $keywords = NULL)
+function showcaseidx_yoast_seo_url ($url) {
+    global $showcaseidx_seo_data;
+    return $showcaseidx_seo_data['url'];
+}
+
+function showcaseidx_seoify($title, $description = NULL, $keywords = NULL, $canonicalUrl = NULL)
 {
     global $wp_query;
+    global $showcaseidx_seo_data;
+    $showcaseidx_seo_data['url'] = $canonicalUrl;
 
-    add_filter('wp_title', 'showcaseidx_wp_title', 10, 2);
     $wp_query->set(SHOWCASEIDX_QUERY_VAR_SEO_TITLE, $title);
-
-    add_action('wp_head', 'showcaseidx_wp_head');
     $wp_query->set(SHOWCASEIDX_QUERY_VAR_SEO_DESCRIPTION, $description);
     $wp_query->set(SHOWCASEIDX_QUERY_VAR_SEO_KEYWORDS, $keywords);
+
+    add_filter('wpseo_canonical', 'showcaseidx_yoast_seo_url');
+    add_filter('wp_title', 'showcaseidx_wp_title', 10, 2);
+    add_filter('wpseo_title', 'showcaseidx_wp_title');
+    add_action('wp_head', 'showcaseidx_wp_head');
+    add_filter('wpseo_metadesc', '__return_false');
+    add_filter('wpseo_metakey', '__return_false');
+    add_filter('wpseo_prev_rel_link', '__return_false');
+    add_filter('wpseo_next_rel_link', '__return_false');
 }
 
 function showcaseidx_wp_head()
