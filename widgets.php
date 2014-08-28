@@ -32,17 +32,11 @@ function showcaseidx_show_hotsheet($scParams) {
     $shortcodeAttrs = shortcode_atts(array(
         'type' => 'custom',                 // custom, agent, office
         'name' => '',                       // name of hotsheet; only referenced for type=custom
-        'hide_map' => 'false',
-        'hide_search' => 'false',
-        'recent' => '',
+        'hide_map' => false,
+        'hide_search' => false,
     ), $scParams);
-    $searchConfigJSON = "{ 'hotsheet': { 'type': '{$shortcodeAttrs['type']}', 
-                                         'name': '{$shortcodeAttrs['name']}',
-                                         'hide_map': {$shortcodeAttrs['hide_map']},
-                                         'hide_search': {$shortcodeAttrs['hide_search']},
-                                         'recent': '{$shortcodeAttrs['recent']}'
-                                          } }"; // WP might not have json_encode
-    return showcaseidx_generate_app("Hotsheet: {$name}", NULL, $searchConfigJSON);
+    $jsonEncoded = json_encode(array('hotsheet' => $shortcodeAttrs));
+    return showcaseidx_generate_app("{$shortcodeAttrs['type']} hotsheet", NULL, $jsonEncoded);
 }
 
 /*************** HELPER FUNCTIONS FOR SHORTCODE GENERATORS **********************/
@@ -53,7 +47,7 @@ function showcaseidx_generate_app($seoPlaceholder = NULL, $defaultAppUrl = NULL,
     }
     $config = showcaseidx_generate_config($customSearchConfig);
     $defaultAppUrl = $defaultAppUrl ? showcaseidx_generate_default_app_url($defaultAppUrl) : NULL;
-    $widget = showcaseidx_cachable_fetch("http://cdn.showcaseidx.com/wordpress_noscript");
+    $widget = apply_filters('showcase_widget_content', showcaseidx_cachable_fetch("http://cdn.showcaseidx.com/wordpress_noscript"));
     return <<<EOT
         {$config}
         {$defaultAppUrl}
