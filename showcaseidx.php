@@ -4,7 +4,7 @@ Plugin Name: Showcase IDX
 Plugin URI: http://showcaseidx.com/
 Description: Interactive, map-centric real-estate property search.
 Author: Kanwei Li
-Version: 2.2.0
+Version: 2.2.1
 Author URI: http://showcaseidx.com/
 */
 
@@ -89,7 +89,7 @@ function showcaseidx_router()
 {
     global $wp_query;
 
-    if ( array_key_exists(SHOWCASEIDX_QUERY_VAR_SEARCH, $wp_query->query_vars ) ) {
+    if (array_key_exists(SHOWCASEIDX_QUERY_VAR_SEARCH, $wp_query->query_vars)) {
         //  Main Search page
         showcaseidx_seoify('Property Search', 'Search the MLS for real estate, both for sale and for rent, in your area.', 'real estate property search, mls search', showcaseidx_base_url());
 
@@ -211,12 +211,14 @@ function showcaseidx_install_routing() {
     add_rewrite_tag('%' . SHOWCASEIDX_QUERY_VAR_COMMUNITY . '%', '([^&]+)');
     
     // map our widget/form response handler
-    add_rewrite_rule(
-        showcaseidx_get_prefix() . '/?(.*)$',
-        'index.php?' . SHOWCASEIDX_QUERY_VAR_SEARCH . '&$matches[1]',
-        'top'
-    );
-    add_rewrite_tag('%' . SHOWCASEIDX_QUERY_VAR_SEARCH . '%', '([^&]+)');
+    if (!get_option('showcaseidx_disable_search_routing')) {
+        add_rewrite_rule(
+            showcaseidx_get_prefix() . '/?(.*)$',
+            'index.php?' . SHOWCASEIDX_QUERY_VAR_SEARCH . '&$matches[1]',
+            'top'
+        );
+        add_rewrite_tag('%' . SHOWCASEIDX_QUERY_VAR_SEARCH . '%', '([^&]+)');
+    }
 
 //    add_rewrite_tag('%' . SHOWCASEIDX_QUERY_VAR_BROWSE_BY_REGION . '%', '([^&]+)');
 //    add_rewrite_tag('%' . SHOWCASEIDX_QUERY_VAR_BROWSE_BY_REGION_ID . '%', '([^&]+)');
@@ -231,12 +233,9 @@ function showcaseidx_wp_title($title, $sep = "---")
     $localTitle = trim($localTitle);
     $localTitle = urldecode($localTitle);
     $localTitle = htmlentities($localTitle);
-    if (empty($localTitle))
-    {
+    if (empty($localTitle)) {
         return $title;
-    }
-    else
-    {
+    } else {
         return "{$localTitle} {$sep} {$title}";
     }
 }
