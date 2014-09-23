@@ -16,6 +16,7 @@ function showcaseidx_plugin_setup() {
     add_option('showcaseidx_template',      '');
     add_option('showcaseidx_cache_version', date('r'));
     add_option('showcaseidx_url_namespace', SHOWCASEIDX_SEARCH_DEFAULT_URL_NAMESPACE);
+    add_option('showcaseidx_disable_search_routing', 0);
 
     // enable widgets to run short codes
 	add_filter('widget_text', 'do_shortcode', 11);
