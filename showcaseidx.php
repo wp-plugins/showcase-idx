@@ -4,7 +4,7 @@ Plugin Name: Showcase IDX
 Plugin URI: http://showcaseidx.com/
 Description: Interactive, map-centric real-estate property search.
 Author: Kanwei Li
-Version: 2.2.1
+Version: 2.2.2
 Author URI: http://showcaseidx.com/
 */
 
@@ -178,9 +178,8 @@ function showcaseidx_router()
 function showcaseidx_install_routing() {
     global $wp_rewrite;
 
-    // in order to get any custom rewrite rules inserted into .htaccess, have to set use_verbose_rules=true for some reason
-    // seems like a hideous bug but hey what can I do
-    $wp_rewrite->use_verbose_rules = true;
+    // Use non-verbose rules
+    $wp_rewrite->use_verbose_rules = false;
 
     // shared stuff
     add_rewrite_tag('%' . SHOWCASEIDX_QUERY_VAR_SEO_TITLE . '%', '([^&]+)');
