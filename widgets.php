@@ -2,6 +2,8 @@
 
 // SHORTCODE HANDLERS
 // curried shortcode generators
+function showcaseidx_widget_login() { return showcaseidx_generate_app(null, "/login"); }
+function showcaseidx_widget_register() { return showcaseidx_generate_app(null, "/register"); }
 function showcaseidx_widget_230() { return showcaseidx_generate_widget('widgets230'); }
 function showcaseidx_widget_465() { return showcaseidx_generate_widget('widgets465'); }
 function showcaseidx_widget_700() { return showcaseidx_generate_widget('widgets700'); }
@@ -51,9 +53,9 @@ function showcaseidx_generate_app($seoPlaceholder = NULL, $defaultAppUrl = NULL,
     return <<<EOT
         {$config}
         {$defaultAppUrl}
-        <div class="mydx2-hide">
+        <noscript>
             {$seoPlaceholder}
-        </div>
+        </noscript>
         {$widget}
 EOT;
 }

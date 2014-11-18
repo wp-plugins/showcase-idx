@@ -14,6 +14,7 @@ function showcaseidx_create_menu_page() {
 function register_mysettings() {  
     register_setting( 'showcase-settings-group', 'showcaseidx_api_host');
     register_setting( 'showcase-settings-group', 'showcaseidx_api_key');
+    register_setting( 'showcase-settings-group', 'showcaseidx_disable_search_routing');
     register_setting( 'showcase-settings-group', 'showcaseidx_template');
     register_setting( 'showcase-settings-group', 'showcaseidx_setup_step');
     register_setting( 'showcase-settings-group', 'showcaseidx_url_namespace', 'showcaseidx_sanitize_url_namespace');
@@ -61,6 +62,7 @@ function display_showcase_settings() {
     $propertySearchBaseUrl = home_url() . '/' . showcaseidx_get_prefix();
     $current_key = get_option('showcaseidx_api_key');
     $current_namespace = get_option('showcaseidx_url_namespace');
+    $showcaseidx_disable_search_routing = get_option('showcaseidx_disable_search_routing');
     $status = "Offline";
     $activated = false;
     if ($current_key) {
@@ -170,11 +172,11 @@ function display_showcase_settings() {
 <input class="showcase-input" type="text" name="showcaseidx_url_namespace" value="<?php echo $current_namespace; ?>" />
 <br><p class="showcase-examples"><i>examples: miami-homes, atlanta-condo-search, south-beach-rentals</i></p>
 
+<p><label><input type="checkbox" name="showcaseidx_disable_search_routing" value="1" <?php checked( $showcaseidx_disable_search_routing, 1 ); ?> />Disable routing (Only check this if you've been told to!)</label></p>
 
 <input type="hidden" name="showcaseidx_api_key" value="<?php echo $current_key; ?>" />
-</p>
 <input type="hidden" name="showcaseidx_setup_step" value="namespace" />
-<center><?php submit_button("Finish", "primary"); ?></center>
+<center><?php submit_button("Finish", "primary", "submit", false); ?></center>
 
 </div>
 
