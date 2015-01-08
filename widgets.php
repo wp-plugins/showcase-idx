@@ -11,9 +11,9 @@ function showcaseidx_widget_930() { return showcaseidx_generate_widget('widgets9
 function showcaseidx_generate_widget($type)
 {
     $config = showcaseidx_generate_config();
-    $cdn    = "cdn.showcaseidx.com";
+    $cdn_host    = get_option('showcaseidx_cdn_host');
 
-    $widgetUrl = "http://$cdn/{$type}";
+    $widgetUrl = "$cdn_host/{$type}";
     $widget = showcaseidx_cachable_fetch($widgetUrl);
 
     $searchHostPage = showcaseidx_base_url() . '/';
@@ -26,7 +26,7 @@ EOT;
 }
 
 function showcaseidx_show_app() {
-    $seoPlaceholder = '<a href="' . showcaseidx_base_url() . '/all">View all listings</a>';
+    $seoPlaceholder = '<noscript><a href="' . showcaseidx_base_url() . '/all">View all listings</a></noscript>';
     return showcaseidx_generate_app($seoPlaceholder);
 }
 
@@ -38,6 +38,14 @@ function showcaseidx_show_hotsheet($scParams) {
         'hide_search' => false,
     ), $scParams);
     $jsonEncoded = json_encode(array('hotsheet' => $shortcodeAttrs));
+
+    // Get SEO listings for custom hotsheets
+    if (isset($scParams['name'])) {
+        echo "<noscript>";
+        echo showcaseidx_post(get_option('showcaseidx_api_v2_host') . "/seo/hotsheet_listings",
+            array("hotsheet_name" => $scParams['name'], "api_key" => get_option('showcaseidx_api_key')));
+        echo "</noscript>";
+    }
     return showcaseidx_generate_app("{$shortcodeAttrs['type']} hotsheet", NULL, $jsonEncoded);
 }
 
@@ -48,8 +56,9 @@ function showcaseidx_generate_app($seoPlaceholder = NULL, $defaultAppUrl = NULL,
         $customSearchConfig = showcaseidx_get_custom_widget_config();
     }
     $config = showcaseidx_generate_config($customSearchConfig);
+    $cdn_host = get_option('showcaseidx_cdn_host');
     $defaultAppUrl = $defaultAppUrl ? showcaseidx_generate_default_app_url($defaultAppUrl) : NULL;
-    $widget = apply_filters('showcase_widget_content', showcaseidx_cachable_fetch("http://cdn.showcaseidx.com/wordpress_noscript"));
+    $widget = apply_filters('showcase_widget_content', showcaseidx_cachable_fetch("$cdn_host/wordpress_noscript"));
     return <<<EOT
         {$config}
         {$defaultAppUrl}
@@ -61,7 +70,9 @@ EOT;
 }
 
 function showcaseidx_generate_config($customSearchConfig = null) {
-    $WEBSITE_ID = get_option('showcaseidx_api_key');
+    $api_key = get_option('showcaseidx_api_key');
+    $api_root = get_option('showcaseidx_api_v2_host');
+    $cdn_root = get_option('showcaseidx_cdn_host');
 
     if ($customSearchConfig === NULL)
     {
@@ -73,7 +84,9 @@ function showcaseidx_generate_config($customSearchConfig = null) {
 <script type="text/javascript">
 if (!SHOWCASE_CONF) {
     var SHOWCASE_CONF = {
-        WEBSITE_ID: "{$WEBSITE_ID}"
+        WEBSITE_ROOT: "{$api_root}",
+        CDN_ROOT: "{$cdn_root}",
+        WEBSITE_ID: "{$api_key}"
     };
 }
 if ($customSearchConfig) {
@@ -99,7 +112,9 @@ function showcaseidx_display_templated($content)
     $templateName = get_option('showcaseidx_template');
     // select template....
     echo get_header($templateName);
+    echo '<div id="mydx-container">';
     echo $content;
+    echo '</div>';
     echo get_footer($templateName);
     exit;
 }

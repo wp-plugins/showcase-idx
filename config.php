@@ -5,18 +5,22 @@ define('SHOWCASEIDX_QUERY_VAR_SEARCH',              'ShowcaseIDX');
 define('SHOWCASEIDX_SEARCH_DEFAULT_URL_NAMESPACE',  'properties' );
 
 define('SHOWCASEIDX_QUERY_VAR_SEO_TITLE',           'ShowcaseSeoTitle');
+define('SHOWCASEIDX_QUERY_VAR_SEO_XMLSITEMAP',      'ShowcaseSeoXmlSitemap');
 define('SHOWCASEIDX_QUERY_VAR_SEO_KEYWORDS',        'ShowcaseSeoKeywords');
 define('SHOWCASEIDX_QUERY_VAR_SEO_DESCRIPTION',     'ShowcaseSeoDescription');
 define('SHOWCASEIDX_QUERY_VAR_COMMUNITY',           'CommunityId');
 define('SHOWCASEIDX_QUERY_VAR_LISTINGS',            'Listings');
 define('SHOWCASEIDX_QUERY_VAR_LISTINGS_PAGENUM',    'ListingsPageNum');
 define('SHOWCASEIDX_QUERY_VAR_LISTING',             'ListingId');
+define('SHOWCASEIDX_QUERY_VAR_SITEMAP',             'Sitemap');
 
 // Plugin Bootstrap / hook installation
 function showcaseidx_plugin_setup() {
     // defaults for our options
-    add_option('showcaseidx_api_host',                  '');
+    add_option('showcaseidx_api_v2_host',               'https://idx.showcaseidx.com');
+    add_option('showcaseidx_cdn_host',                  'http://cdn.showcaseidx.com');
     add_option('showcaseidx_api_key',                   '');
+    add_option('showcaseidx_disable_search_routing',    0);
     add_option('showcaseidx_template',                  '');
     add_option('showcaseidx_setup_step',                '');
     add_option('showcaseidx_cache_version',             date('r'));
@@ -38,19 +42,11 @@ function showcaseidx_plugin_setup() {
     // install routing
     add_action('init',                 'showcaseidx_install_routing');
     add_action('template_redirect',    'showcaseidx_router');
+    add_action('updated_option',       'showcaseidx_install_rewrite_rules');
 
     // admin hooks
     add_action('admin_menu', 'showcaseidx_create_menu_page');
-    add_action('admin_init', 'register_mysettings');
-}
-
-function showcaseidx_get_host() {
-    $host = get_option('showcaseidx_api_host');
-    if (!$host)
-    {
-        $host = 'idx.showcaseidx.com';
-    }
-    return $host;
+    add_action('admin_init', 'register_showcaseidx_settings');
 }
 
 function showcaseidx_get_prefix() {
