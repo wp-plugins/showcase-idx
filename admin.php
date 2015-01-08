@@ -5,14 +5,15 @@
  */
 
 add_action( 'admin_menu', 'showcaseidx_create_menu_page' );
-add_action( 'admin_init', 'register_mysettings' );
+add_action( 'admin_init', 'register_showcaseidx_settings' );
 
 function showcaseidx_create_menu_page() {
     add_menu_page("Showcase IDX Admin", "Showcase IDX", "manage_options", "showcaseidx", "display_showcase_settings", null, '100.1337');
 }
 
-function register_mysettings() {  
-    register_setting( 'showcase-settings-group', 'showcaseidx_api_host');
+function register_showcaseidx_settings() {
+    register_setting( 'showcase-settings-group', 'showcaseidx_api_v2_host');
+    register_setting( 'showcase-settings-group', 'showcaseidx_cdn_host');
     register_setting( 'showcase-settings-group', 'showcaseidx_api_key');
     register_setting( 'showcase-settings-group', 'showcaseidx_disable_search_routing');
     register_setting( 'showcase-settings-group', 'showcaseidx_template');
@@ -62,11 +63,11 @@ function display_showcase_settings() {
     $propertySearchBaseUrl = home_url() . '/' . showcaseidx_get_prefix();
     $current_key = get_option('showcaseidx_api_key');
     $current_namespace = get_option('showcaseidx_url_namespace');
-    $showcaseidx_disable_search_routing = get_option('showcaseidx_disable_search_routing');
     $status = "Offline";
     $activated = false;
+    $api_host = get_option('showcaseidx_api_v2_host');
     if ($current_key) {
-        $response_code = wp_remote_retrieve_response_code(wp_remote_get("http://idx.showcaseidx.com/wp_status?key=$current_key&namespace=$current_namespace"));
+        $response_code = wp_remote_retrieve_response_code(wp_remote_get("$api_host/wp_status?key=$current_key&namespace=$current_namespace"));
         if($response_code == 200) {
             $status = "Online";
             $activated = true;
@@ -135,6 +136,19 @@ function display_showcase_settings() {
 <form method="post" action="options.php">
     <?php settings_fields( 'showcase-settings-group' ); ?>
 
+
+    <?php if(isset($_GET["advanced"])) { ?>
+        <label>API Host:
+        <input class="showcase-input" type="text" name="showcaseidx_api_v2_host" value="<?php echo get_option('showcaseidx_api_v2_host'); ?>" />
+        </label>
+        <label>CDN Host:
+            <input class="showcase-input" type="text" name="showcaseidx_cdn_host" value="<?php echo get_option('showcaseidx_cdn_host'); ?>" />
+        </label>
+    <?php } else { ?>
+        <input class="showcase-input" type="hidden" name="showcaseidx_api_v2_host" value="<?php echo get_option('showcaseidx_api_v2_host'); ?>" />
+        <input class="showcase-input" type="hidden" name="showcaseidx_cdn_host" value="<?php echo get_option('showcaseidx_cdn_host'); ?>" />
+    <?php } ?>
+
 <?php if(!$activated) { ?>
 
 <div style="text-align: center;">
@@ -169,12 +183,12 @@ function display_showcase_settings() {
 <b>Important: You can change this, but it will change ALL your SEO links, so it's not a good idea once you're up and running.</b></p>
 
 <b class="showcase-url"><?php echo get_site_url(); ?>/</b>
-<input class="showcase-input" type="text" name="showcaseidx_url_namespace" value="<?php echo $current_namespace; ?>" />
+<input class="showcase-input" type="text" name="showcaseidx_url_namespace" value="<?php echo get_option('showcaseidx_url_namespace'); ?>" />
 <br><p class="showcase-examples"><i>examples: miami-homes, atlanta-condo-search, south-beach-rentals</i></p>
 
-<p><label><input type="checkbox" name="showcaseidx_disable_search_routing" value="1" <?php checked( $showcaseidx_disable_search_routing, 1 ); ?> />Disable routing (Only check this if you've been told to!)</label></p>
+<p><label><input type="checkbox" name="showcaseidx_disable_search_routing" value="1" <?php checked( get_option('showcaseidx_disable_search_routing'), 1 ); ?> />Disable routing (Only check this if you've been told to!)</label></p>
 
-<input type="hidden" name="showcaseidx_api_key" value="<?php echo $current_key; ?>" />
+<input type="hidden" name="showcaseidx_api_key" value="<?php echo get_option('showcaseidx_api_key'); ?>" />
 <input type="hidden" name="showcaseidx_setup_step" value="namespace" />
 <center><?php submit_button("Finish", "primary", "submit", false); ?></center>
 
