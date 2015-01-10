@@ -4,7 +4,7 @@ Plugin Name: Showcase IDX
 Plugin URI: http://showcaseidx.com/
 Description: Interactive, map-centric real-estate property search.
 Author: Showcase IDX
-Version: 2.3.0
+Version: 2.3.1
 Author URI: http://showcaseidx.com/
 */
 
@@ -60,6 +60,7 @@ add_action('plugins_loaded', 'showcaseidx_plugin_migration');
 register_activation_hook(__FILE__, 'showcaseidx_activation_hook');
 
 register_activation_hook(__FILE__, 'showcaseidx_cachebust_activation');
+register_activation_hook(__FILE__, 'showcaseidx_install_rewrite_rules');
 register_activation_hook(__FILE__, 'showcaseidx_bust_cache');
 add_action('showcaseidx_cachebust', 'showcaseidx_bust_cache');
 register_deactivation_hook(__FILE__, 'showcaseidx_cachebust_deactivation');
@@ -183,7 +184,7 @@ function showcaseidx_router()
 
     if (array_key_exists(SHOWCASEIDX_QUERY_VAR_SITEMAP, $wp_query->query_vars)) {
         $content = showcaseidx_post("$api_host/seo/intermediary/" . $wp_query->get(SHOWCASEIDX_QUERY_VAR_SITEMAP), array(
-            'namespace' => get_option('showcaseidx_url_namespace'),
+            'namespace' => showcaseidx_base_url(),
             'api_key' => get_option('showcaseidx_api_key'),
             'query' => $wp_query->get(SHOWCASEIDX_QUERY_VAR_SITEMAP)));
         showcaseidx_display_templated( $content );
@@ -223,16 +224,6 @@ function showcaseidx_install_routing() {
     );
     add_rewrite_tag('%' . SHOWCASEIDX_QUERY_VAR_SITEMAP . '%', '([^&]+)');
 
-
-//
-//    // map COMMUNITY pages
-//    add_rewrite_rule(
-//        showcaseidx_get_prefix() . '/?.*/([0-9]+)/?$',
-//        'index.php?' . SHOWCASEIDX_QUERY_VAR_COMMUNITY . '=$matches[1]',
-//        'top'
-//    );
-    add_rewrite_tag('%' . SHOWCASEIDX_QUERY_VAR_COMMUNITY . '%', '([^&]+)');
-    
     // map our widget/form response handler
     if (get_option('showcaseidx_disable_search_routing') != 1) {
         add_rewrite_rule(
@@ -342,8 +333,8 @@ function showcaseidx_post($url, $params) {
     return wp_remote_retrieve_body($response);
 }
 
-function showcaseidx_fetch($url) {
-
+function showcaseidx_fetch($url)
+{
     global $wp_query;
     $response = wp_remote_get($url, array('timeout' => 60));
     if (wp_remote_retrieve_response_code($response) != 200) {
@@ -357,7 +348,8 @@ function showcaseidx_fetch($url) {
 }
 
 
-function showcaseidx_simple_fetch($url) {
+function showcaseidx_simple_fetch($url)
+{
     global $wp_query;
     $response = wp_remote_get($url, array('timeout' => 60));
     return wp_remote_retrieve_body($response);

@@ -40,9 +40,9 @@ function showcaseidx_plugin_setup() {
     add_shortcode('showcaseidx_widget_930',         'showcaseidx_widget_930');
 
     // install routing
-    add_action('init',                 'showcaseidx_install_routing');
-    add_action('template_redirect',    'showcaseidx_router');
-    add_action('updated_option',       'showcaseidx_install_rewrite_rules');
+    add_action('init',                                              'showcaseidx_install_routing');
+    add_action('template_redirect',                                 'showcaseidx_router');
+    add_action('update_option_showcaseidx_disable_search_routing',  'showcaseidx_install_rewrite_rules');
 
     // admin hooks
     add_action('admin_menu', 'showcaseidx_create_menu_page');
@@ -51,8 +51,7 @@ function showcaseidx_plugin_setup() {
 
 function showcaseidx_get_prefix() {
     $prefix = get_option('showcaseidx_url_namespace');
-    if (empty($prefix))
-    {
+    if (empty($prefix)) {
         $prefix = SHOWCASEIDX_SEARCH_DEFAULT_URL_NAMESPACE;
     }
     return $prefix;
