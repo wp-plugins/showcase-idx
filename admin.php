@@ -67,7 +67,7 @@ function display_showcase_settings() {
     $activated = false;
     $api_host = get_option('showcaseidx_api_v2_host');
     if ($current_key) {
-        $response_code = wp_remote_retrieve_response_code(wp_remote_get("$api_host/wp_status?key=$current_key&namespace=$current_namespace"));
+        $response_code = wp_remote_retrieve_response_code(wp_remote_get("$api_host/wp_status?key=$current_key&namespace=$current_namespace&full_root=$propertySearchBaseUrl"));
         if($response_code == 200) {
             $status = "Online";
             $activated = true;
