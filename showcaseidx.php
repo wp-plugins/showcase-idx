@@ -4,7 +4,7 @@ Plugin Name: Showcase IDX
 Plugin URI: http://showcaseidx.com/
 Description: Interactive, map-centric real-estate property search.
 Author: Showcase IDX
-Version: 2.3.1
+Version: 2.3.2
 Author URI: http://showcaseidx.com/
 */
 
