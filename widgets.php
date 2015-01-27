@@ -8,6 +8,7 @@ function showcaseidx_widget_230() { return showcaseidx_generate_widget('widgets2
 function showcaseidx_widget_465() { return showcaseidx_generate_widget('widgets465'); }
 function showcaseidx_widget_700() { return showcaseidx_generate_widget('widgets700'); }
 function showcaseidx_widget_930() { return showcaseidx_generate_widget('widgets930'); }
+function showcaseidx_widget_omnibox() { return showcaseidx_generate_widget('widgetsomnibox'); }
 function showcaseidx_generate_widget($type)
 {
     $config = showcaseidx_generate_config();
