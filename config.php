@@ -38,6 +38,7 @@ function showcaseidx_plugin_setup() {
     add_shortcode('showcaseidx_widget_465',         'showcaseidx_widget_465');
     add_shortcode('showcaseidx_widget_700',         'showcaseidx_widget_700');
     add_shortcode('showcaseidx_widget_930',         'showcaseidx_widget_930');
+    add_shortcode('showcaseidx_widget_omnibox',     'showcaseidx_widget_omnibox');
 
     // install routing
     add_action('init',                                              'showcaseidx_install_routing');

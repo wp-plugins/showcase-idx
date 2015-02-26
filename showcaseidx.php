@@ -4,11 +4,11 @@ Plugin Name: Showcase IDX
 Plugin URI: http://showcaseidx.com/
 Description: Interactive, map-centric real-estate property search.
 Author: Showcase IDX
-Version: 2.3.1
+Version: 2.3.3
 Author URI: http://showcaseidx.com/
 */
 
-/*  Copyright 2014 Kanwei Li (email : kanwei@showcaseidx.com)
+/*  Copyright 2015 Kanwei Li (email : kanwei@showcaseidx.com)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License, version 2, as 
@@ -173,7 +173,7 @@ function showcaseidx_router()
         $apiKey = get_option('showcaseidx_api_key');
         $listingId = trim($wp_query->get(SHOWCASEIDX_QUERY_VAR_LISTING), ' /');
         $defaultAppUrl = "/listings/{$listingId}";
-        $seoUrl = showcaseidx_base_url() . "/" . urlencode($seo) . "/{$listingId}";
+        $seoUrl = showcaseidx_base_url() . "/" . $seo . "/{$listingId}";
         $seoDetail = json_decode(showcaseidx_fetch("$api_host/seo_listing/{$listingId}?website_id={$apiKey}"), true);
         $content = showcaseidx_generate_app($seoDetail["listing"], $defaultAppUrl);
 
