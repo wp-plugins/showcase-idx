@@ -3,12 +3,15 @@ Contributors: showcaseidx
 Tags: real estate search, idx search, idx, showcase idx, search plugin
 Requires at least: 3.0.1
 Tested up to: 4.1
-Stable tag: 2.3.2
+Stable tag: 2.3.3
 
 A simple, beautiful real estate search plugin for your Wordpress website, that's both indexable and responsive.
 
 == Description ==
-[youtube http://www.youtube.com/watch?v=omIVgRAGaQI]
+[vimeo https://vimeo.com/113507855]
+
+**[Get Started with a Free 10-day Trial](http://showcaseidx.com/provision/)**
+
 
 [Showcase IDX](http://showcaseidx.com/ "Showcase IDX Website") lets real estate agents embed a beautifully simple, yet surprisingly powerful, home search into their site. Focusing on your visitor's experience, Showcase IDX gives your users a great experience and a reason to come back to your website to continue their home search. Built using the latest technologies that allows us to regularly upgrade and tweak the product, so your investment continues to grow and evolve over time.
 
@@ -73,7 +76,7 @@ Showcase IDX has been around for 10 years providing real estate websites and we'
 = What Happens When I Sign Up? =
 
 **Step 1 – Paperless MLS documentation.**
-You will be receiving an email shortly with links to the e-documents for the MLS's you belong to. We will review your application and ensure compliance with the MLS. This typically can take anywhere from the same day to 5 business days depending on the MLS and how fast we get the signed documentation back from you.
+You will be receiving an email shortly with links to the e-documents for the MLS's you belong to. We will review your application and ensure compliance with the MLS. This typically can take anywhere from the same day to 5 business days depending on the MLS and how fast we get the signed documentation back from you. **Please be sure to read and review your documentation** (in some cases it has additional instructions which you must complete separately).
 
 **Step 2 – MLS Approval.**
 Once you’ve been approved by the MLS, we'll send you your personal IDX key and installation instructions. You will need your personal IDX key to make your Showcase IDX search work on your site. 
@@ -81,8 +84,8 @@ Once you’ve been approved by the MLS, we'll send you your personal IDX key and
 **Step 3 - Installation**
 We've made it as easy as possible to install the plugin on your site, so just follow the written-for-Realtors instructions and you should be good! If you have any issues, put in a [support ticket](http://showcaseidx.com/support/ “Send us a support ticket”).
 
-= Do You Have setup Fees or Contracts? =
-There are no setup fees or term contracts with Showcase IDX. All of our users are on month-to-month subscriptions. which gives you flexibility and makes sure that we live up to our end of the deal and provide you with an awesome IDX investment that you would never dream of cancelling!
+= Do You Have Setup Fees or Contracts? =
+There are no setup fees or long-term contracts with Showcase IDX. All of our users are on month-to-month subscriptions. This gives you flexibility and makes sure that we live up to our end of the deal and provide you with an awesome IDX investment that you would never dream of cancelling!
 
 = Things to Consider When Adding IDX to Your Site =
 This can vary from website to website, but we have seen the following things work very well:
@@ -157,7 +160,11 @@ It's also important to understand that adding any IDX from any company to your s
 = 2.3.2 =
 * Omnibox widget
 
+= 2.3.3 =
+* Don't encode canonical URL
+
 == Upgrade Notice ==
 
 = 1.4.0 =
 Showcase IDX users should update the plugin to the latest version (2.0).
+
