@@ -9,6 +9,7 @@ function showcaseidx_widget_465() { return showcaseidx_generate_widget('widgets4
 function showcaseidx_widget_700() { return showcaseidx_generate_widget('widgets700'); }
 function showcaseidx_widget_930() { return showcaseidx_generate_widget('widgets930'); }
 function showcaseidx_widget_omnibox() { return showcaseidx_generate_widget('widgetsomnibox'); }
+function showcaseidx_widget_updated() { return showcaseidx_generate_widget('widgetsupdated'); }
 function showcaseidx_generate_widget($type)
 {
     $config = showcaseidx_generate_config();
@@ -21,7 +22,6 @@ function showcaseidx_generate_widget($type)
     $widget = str_replace('action_url', $searchHostPage, $widget);
     return <<<EOT
         {$config}
-        <link href="http://$cdn/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
         {$widget}
 EOT;
 }

@@ -4,14 +4,14 @@ Plugin Name: Showcase IDX
 Plugin URI: http://showcaseidx.com/
 Description: Interactive, map-centric real-estate property search.
 Author: Showcase IDX
-Version: 2.3.3
+Version: 2.4.0
 Author URI: http://showcaseidx.com/
 */
 
 /*  Copyright 2015 Kanwei Li (email : kanwei@showcaseidx.com)
 
     This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License, version 2, as 
+    it under the terms of the GNU General Public License, version 2, as
     published by the Free Software Foundation.
 
     This program is distributed in the hope that it will be useful,
@@ -119,7 +119,7 @@ function showcaseidx_router()
 
     if (array_key_exists(SHOWCASEIDX_QUERY_VAR_LISTINGS, $wp_query->query_vars)) {
         // Index page for SEO pages (/all), and pagination pages
-        
+
         // pages go 0..n
         $currentPageNum = (int) $wp_query->get(SHOWCASEIDX_QUERY_VAR_LISTINGS_PAGENUM);
         $apiKey = get_option('showcaseidx_api_key');
@@ -208,7 +208,7 @@ function showcaseidx_install_routing() {
         'top'
     );
     add_rewrite_tag('%' . SHOWCASEIDX_QUERY_VAR_SEO_XMLSITEMAP . '%', '([^&]+)');
-    
+
     // map LISTING pages
     add_rewrite_rule(
         showcaseidx_get_prefix() . '/(.*)/([0-9]+_[a-zA-Z0-9]+)/?$',
@@ -216,7 +216,7 @@ function showcaseidx_install_routing() {
         'top'
     );
     add_rewrite_tag('%' . SHOWCASEIDX_QUERY_VAR_LISTING . '%', '([^&]+)');
-    
+
     add_rewrite_rule(
         showcaseidx_get_prefix() . '/(.*)/?$',
         'index.php?' . SHOWCASEIDX_QUERY_VAR_SITEMAP . '=$matches[1]',
@@ -307,7 +307,7 @@ function showcaseidx_bust_cache()
 
 function showcaseidx_install_rewrite_rules()
 {
-    
+
     flush_rewrite_rules();
     showcaseidx_install_routing();
 }

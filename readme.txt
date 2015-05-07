@@ -2,8 +2,8 @@
 Contributors: showcaseidx
 Tags: real estate search, idx search, idx, showcase idx, search plugin
 Requires at least: 3.0.1
-Tested up to: 4.1
-Stable tag: 2.3.3
+Tested up to: 4.2.1
+Stable tag: 2.4.0
 
 A simple, beautiful real estate search plugin for your Wordpress website, that's both indexable and responsive.
 
@@ -32,7 +32,7 @@ Showcase IDX has been around for 10 years providing real estate websites and we'
 *   Social Media sharing
 *   Combined MLS data feeds
 *   Large photos and thumbnails
-*   Google Streetview 
+*   Google Streetview
 *   Infinite scroll results
 *   Search widgets
 *   Foreclosures and short sales
@@ -79,7 +79,7 @@ Showcase IDX has been around for 10 years providing real estate websites and we'
 You will be receiving an email shortly with links to the e-documents for the MLS's you belong to. We will review your application and ensure compliance with the MLS. This typically can take anywhere from the same day to 5 business days depending on the MLS and how fast we get the signed documentation back from you. **Please be sure to read and review your documentation** (in some cases it has additional instructions which you must complete separately).
 
 **Step 2 – MLS Approval.**
-Once you’ve been approved by the MLS, we'll send you your personal IDX key and installation instructions. You will need your personal IDX key to make your Showcase IDX search work on your site. 
+Once you’ve been approved by the MLS, we'll send you your personal IDX key and installation instructions. You will need your personal IDX key to make your Showcase IDX search work on your site.
 
 **Step 3 - Installation**
 We've made it as easy as possible to install the plugin on your site, so just follow the written-for-Realtors instructions and you should be good! If you have any issues, put in a [support ticket](http://showcaseidx.com/support/ “Send us a support ticket”).
@@ -93,14 +93,14 @@ This can vary from website to website, but we have seen the following things wor
 **Create a full-width page for the IDX to be embeded on and call it Home Search.**
 The search plugin is 930 pixels wide, so it takes up the full page. We have found that making it full width reduces user distraction which means they are less likely to click away and more likely to register or ask a question through the IDX.
 
-**Simplicity.** 
+**Simplicity.**
 We can not say this enough... the sites that our search works the best on are very simple. They don't have any text or images above the search on the page and they don't have links everywhere. Sites that work the best make it very clear where the search can be found and use search widgets on the homepage so users can start searching right away.
 
 **Speed.**
 The speed that it takes to load a page is very important to have a fast website, or else your users will get frustrated and leave. Our IDX plugin has been optimized to load amazingly fast using some of the most cutting-edge server and database technologies. We've found that some themes, widgets and large images load before the Showcase IDX plugin and can make it seem like the plugin is running slowly. In most cases it's not slow, it's just waiting for the other elements on the page to load before it. We recommend keeping your pages lean, keeping things like weather widgets to a minimum. At the end of the day, people are looking to search for homes on your website, all that other stuff doesn't really matter and can just get in the way.
 
 **Traffic.**
-It's also important to understand that adding any IDX from any company to your site will not guarantee a lot of traffic and leads. It's our mission to convert as many of your website users to good leads. Of course, we have SEO optimization built into the site, but consider how many other agents in your market have IDX search too, it's exceedingly competitive. Realistically, you need to add additional useful content to the your site that is unique and will attract search traffic, or add online-search advertising to your marketing efforts. We have seen this work out very well for a number of our customers. Just to be clear, we're not saying you won't get free search traffic with our plugin, you will, but there are other investments that you can make in your website that can give you more of a return. 
+It's also important to understand that adding any IDX from any company to your site will not guarantee a lot of traffic and leads. It's our mission to convert as many of your website users to good leads. Of course, we have SEO optimization built into the site, but consider how many other agents in your market have IDX search too, it's exceedingly competitive. Realistically, you need to add additional useful content to the your site that is unique and will attract search traffic, or add online-search advertising to your marketing efforts. We have seen this work out very well for a number of our customers. Just to be clear, we're not saying you won't get free search traffic with our plugin, you will, but there are other investments that you can make in your website that can give you more of a return.
 
 
 == Changelog ==
@@ -162,6 +162,10 @@ It's also important to understand that adding any IDX from any company to your s
 
 = 2.3.3 =
 * Don't encode canonical URL
+
+= 2.4.0 =
+* Use SSL for CDN
+* Last updated widget
 
 == Upgrade Notice ==
 
