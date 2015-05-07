@@ -18,7 +18,7 @@ define('SHOWCASEIDX_QUERY_VAR_SITEMAP',             'Sitemap');
 function showcaseidx_plugin_setup() {
     // defaults for our options
     add_option('showcaseidx_api_v2_host',               'https://idx.showcaseidx.com');
-    add_option('showcaseidx_cdn_host',                  'http://cdn.showcaseidx.com');
+    add_option('showcaseidx_cdn_host',                  'https://cdn.showcaseidx.com');
     add_option('showcaseidx_api_key',                   '');
     add_option('showcaseidx_disable_search_routing',    0);
     add_option('showcaseidx_template',                  '');
@@ -38,6 +38,8 @@ function showcaseidx_plugin_setup() {
     add_shortcode('showcaseidx_widget_465',         'showcaseidx_widget_465');
     add_shortcode('showcaseidx_widget_700',         'showcaseidx_widget_700');
     add_shortcode('showcaseidx_widget_930',         'showcaseidx_widget_930');
+    add_shortcode('showcaseidx_widget_updated',     'showcaseidx_widget_updated');
+    add_shortcode('showcaseidx_widget_omnibox',     'showcaseidx_widget_omnibox');
 
     // install routing
     add_action('init',                                              'showcaseidx_install_routing');
