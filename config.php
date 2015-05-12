@@ -30,16 +30,17 @@ function showcaseidx_plugin_setup() {
 	add_filter('widget_text', 'do_shortcode', 11);
 
     // register all of our shortcodes
-    add_shortcode('showcaseidx',                    'showcaseidx_show_app');
-    add_shortcode('showcaseidx_hotsheet',           'showcaseidx_show_hotsheet');
-    add_shortcode('showcaseidx_widget_login',       'showcaseidx_widget_login');
-    add_shortcode('showcaseidx_widget_register',    'showcaseidx_widget_register');
-    add_shortcode('showcaseidx_widget_230',         'showcaseidx_widget_230');
-    add_shortcode('showcaseidx_widget_465',         'showcaseidx_widget_465');
-    add_shortcode('showcaseidx_widget_700',         'showcaseidx_widget_700');
-    add_shortcode('showcaseidx_widget_930',         'showcaseidx_widget_930');
-    add_shortcode('showcaseidx_widget_updated',     'showcaseidx_widget_updated');
-    add_shortcode('showcaseidx_widget_omnibox',     'showcaseidx_widget_omnibox');
+    add_shortcode('showcaseidx',                     'showcaseidx_show_app');
+    add_shortcode('showcaseidx_hotsheet',            'showcaseidx_show_hotsheet');
+    add_shortcode('showcaseidx_widget_login',        'showcaseidx_widget_login');
+    add_shortcode('showcaseidx_widget_register',     'showcaseidx_widget_register');
+    add_shortcode('showcaseidx_widget_230',          'showcaseidx_widget_230');
+    add_shortcode('showcaseidx_widget_465',          'showcaseidx_widget_465');
+    add_shortcode('showcaseidx_widget_700',          'showcaseidx_widget_700');
+    add_shortcode('showcaseidx_widget_930',          'showcaseidx_widget_930');
+    add_shortcode('showcaseidx_widget_updated',      'showcaseidx_widget_updated');
+    add_shortcode('showcaseidx_widget_last_updated', 'showcaseidx_widget_updated');
+    add_shortcode('showcaseidx_widget_omnibox',      'showcaseidx_widget_omnibox');
 
     // install routing
     add_action('init',                                              'showcaseidx_install_routing');

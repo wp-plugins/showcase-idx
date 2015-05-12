@@ -3,7 +3,7 @@ Contributors: showcaseidx
 Tags: real estate search, idx search, idx, showcase idx, search plugin
 Requires at least: 3.0.1
 Tested up to: 4.2.1
-Stable tag: 2.4.0
+Stable tag: 2.4.1
 
 A simple, beautiful real estate search plugin for your Wordpress website, that's both indexable and responsive.
 
