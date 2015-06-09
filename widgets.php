@@ -4,12 +4,17 @@
 // curried shortcode generators
 function showcaseidx_widget_login() { return showcaseidx_generate_app(null, "/login"); }
 function showcaseidx_widget_register() { return showcaseidx_generate_app(null, "/register"); }
-function showcaseidx_widget_230() { return showcaseidx_generate_widget('widgets230'); }
-function showcaseidx_widget_465() { return showcaseidx_generate_widget('widgets465'); }
-function showcaseidx_widget_700() { return showcaseidx_generate_widget('widgets700'); }
-function showcaseidx_widget_930() { return showcaseidx_generate_widget('widgets930'); }
-function showcaseidx_widget_omnibox() { return showcaseidx_generate_widget('widgetsomnibox'); }
-function showcaseidx_widget_updated() { return showcaseidx_generate_widget('widgetsupdated'); }
+function showcaseidx_widget_230() { return showcaseidx_generate_widget('widgets/230'); }
+function showcaseidx_widget_465() { return showcaseidx_generate_widget('widgets/465'); }
+function showcaseidx_widget_700() { return showcaseidx_generate_widget('widgets/700'); }
+function showcaseidx_widget_930() { return showcaseidx_generate_widget('widgets/930'); }
+function showcaseidx_widget_contact() { return showcaseidx_generate_widget('widgets/contact'); }
+function showcaseidx_widget_omnibox() { return showcaseidx_generate_widget('widgets/omnibox'); }
+function showcaseidx_widget_updated() { return showcaseidx_generate_widget('widgets/updated'); }
+function showcaseidx_widget_featured() { return showcaseidx_generate_widget('widgets/listing/featured'); }
+function showcaseidx_widget_agent() { return showcaseidx_generate_widget('widgets/listing/agent'); }
+function showcaseidx_widget_office() { return showcaseidx_generate_widget('widgets/listing/office'); }
+function showcaseidx_widget_hotsheet($scParams) { return showcaseidx_generate_widget("widgets/listing/hotsheet?name=$scParams"); }
 function showcaseidx_generate_widget($type)
 {
     $config = showcaseidx_generate_config();
