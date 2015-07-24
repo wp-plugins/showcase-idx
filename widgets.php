@@ -42,6 +42,9 @@ function showcaseidx_show_hotsheet($scParams) {
         'name' => '',                       // name of hotsheet; only referenced for type=custom
         'hide_map' => false,
         'hide_search' => false,
+        'agent_id' => null,
+        'office_id' => null,
+        'limit' => null
     ), $scParams);
     $jsonEncoded = json_encode(array('hotsheet' => $shortcodeAttrs));
 
