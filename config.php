@@ -27,7 +27,7 @@ function showcaseidx_plugin_setup() {
     add_option('showcaseidx_url_namespace',             SHOWCASEIDX_SEARCH_DEFAULT_URL_NAMESPACE);
 
     // enable widgets to run short codes
-	add_filter('widget_text', 'do_shortcode', 11);
+    add_filter('widget_text', 'do_shortcode', 11);
 
     // register all of our shortcodes
     add_shortcode('showcaseidx',                     'showcaseidx_show_app');
@@ -40,6 +40,11 @@ function showcaseidx_plugin_setup() {
     add_shortcode('showcaseidx_widget_930',          'showcaseidx_widget_930');
     add_shortcode('showcaseidx_widget_updated',      'showcaseidx_widget_updated');
     add_shortcode('showcaseidx_widget_last_updated', 'showcaseidx_widget_updated');
+    add_shortcode('showcaseidx_widget_contact',      'showcaseidx_widget_contact');
+    add_shortcode('showcaseidx_widget_agent',        'showcaseidx_widget_agent');
+    add_shortcode('showcaseidx_widget_office',       'showcaseidx_widget_office');
+    add_shortcode('showcaseidx_widget_featured',     'showcaseidx_widget_featured');
+    add_shortcode('showcaseidx_widget_hotsheet',     'showcaseidx_widget_hotsheet');
     add_shortcode('showcaseidx_widget_omnibox',      'showcaseidx_widget_omnibox');
 
     // install routing
